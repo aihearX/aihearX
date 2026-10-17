@@ -14,7 +14,7 @@ export function Card({ children, style, onPress, gradient, glow, padded = true }
   ) : (
     <View style={[styles.card, padded && styles.padded, style]}>{children}</View>
   );
-  const glowStyle = glow ? { shadowColor: glow, shadowOpacity: 0.35, shadowRadius: 20, shadowOffset: { width: 0, height: 10 }, elevation: 6 } : undefined;
+  const glowStyle = glow ? { shadowColor: glow, shadowOpacity: 0.16, shadowRadius: 14, shadowOffset: { width: 0, height: 6 }, elevation: 3 } : undefined;
   if (!onPress) return <View style={glowStyle}>{inner}</View>;
   return (
     <Pressable onPress={onPress} style={({ pressed }) => [glowStyle, { transform: [{ scale: pressed ? 0.98 : 1 }], opacity: pressed ? 0.92 : 1 }]}>
@@ -24,6 +24,6 @@ export function Card({ children, style, onPress, gradient, glow, padded = true }
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: colors.surface, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
+  card: { backgroundColor: colors.bg, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   padded: { padding: space.lg },
 });

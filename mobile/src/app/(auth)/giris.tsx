@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Platform } from 'react-native';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import Animated, { FadeInDown, FadeIn } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Screen, AppText, Button, Card, useToast } from '@/core/ui';
-import { colors, gradients, radius, space } from '@/core/theme';
+import { colors, radius, space } from '@/core/theme';
 import { signInWithApple, signInWithEmail } from '@/core/auth/actions';
 import { useUser } from '@/core/store/user';
 import { CochleaMark } from '@/core/ui/CochleaMark';
@@ -46,7 +45,7 @@ export default function Giris() {
           {Platform.OS === 'ios' ? (
             <AppleAuthentication.AppleAuthenticationButton
               buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
-              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
               cornerRadius={14}
               style={{ width: '100%', height: 50 }}
               onPress={apple}
@@ -69,11 +68,11 @@ export default function Giris() {
       </Animated.View>
 
       <Animated.View entering={FadeInDown.delay(300).duration(500)} style={{ marginTop: space.xl }}>
-        <LinearGradient colors={[...gradients.night]} style={styles.note}>
+        <View style={styles.note}>
           <AppText variant="small" muted center>
             Devam ederek Kullanım Şartları'nı ve Gizlilik Politikası'nı kabul etmiş olursun. Sağlık verilerin yalnızca senin izninle paylaşılır.
           </AppText>
-        </LinearGradient>
+        </View>
       </Animated.View>
     </Screen>
   );
@@ -82,6 +81,6 @@ export default function Giris() {
 const styles = StyleSheet.create({
   or: { flexDirection: 'row', alignItems: 'center', gap: 10, marginVertical: 14 },
   line: { flex: 1, height: 1, backgroundColor: colors.border },
-  input: { backgroundColor: colors.bg2, borderColor: colors.border, borderWidth: 1, borderRadius: radius.md, paddingHorizontal: 14, height: 48, color: colors.text, fontSize: 15 },
-  note: { padding: 14, borderRadius: radius.md },
+  input: { backgroundColor: colors.bg, borderColor: colors.border, borderWidth: 1, borderRadius: radius.md, paddingHorizontal: 14, height: 48, color: colors.text, fontSize: 15 },
+  note: { padding: 14, borderRadius: radius.md, backgroundColor: colors.bg2 },
 });

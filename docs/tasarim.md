@@ -1,27 +1,30 @@
-# aihearX — Tasarım Dili: "Obsidian & Koklea"
+# aihearX — Tasarım Dili: "Kâğıt & Koklea"
 
 ## İlkeler
-1. **Karanlık, derin, parlak vurgu.** Arka plan neredeyse siyah (#070A12), yüzeyler camsı (%5-10 beyaz), tek marka gradyanı (mor #7C5CFF → turkuaz #2EE6D6). Göz yormaz, klinikte ve gece yatakta aynı rahatlıkla kullanılır.
-2. **Odyoloji dili görselde.** Sağ kulak kırmızı, sol kulak mavi; odyogram her yerde aynı çizilir; koklea spirali marka işareti.
-3. **Her sonuç bir kart.** Paylaşılabilir, 9:16'ya uygun, aihearX imzalı. Kart tasarımı uygulamanın kendisinden daha önemlidir: viral olan odur.
-4. **Hareket anlam taşır.** Giriş animasyonları yumuşak (FadeInDown), ödül anları kısa ve haptikli, sakin modda hepsi kısılır.
-5. **Büyük dokunma alanları.** Hasta ve aile için 50 pt altı buton yok.
-6. **Yapımcı görünür.** Her mini uygulamanın giriş ekranında bir insan var; bu, uygulama mağazasındaki anonim araçlardan ayıran şey.
+1. **Açık, sade, boşluklu.** Beyaz zemin, çok hafif gri yüzeyler (#F7F8FB), ince kenarlıklar. Renk yalnızca anlam taşıdığı yerde: kategori ikonları, "Başla" butonu, paylaşım kartları.
+2. **Her ekran tek iş yapar.** Keşfet = kategoriler. Kategori = uygulama listesi. Uygulama girişi = ne yapar, nasıl çalışır, yapımcı, Başla. Başka hiçbir şey yok.
+3. **Tek liste tipi.** Her uygulama her yerde aynı satırla görünür: ikon, ad, bir cümle, süre. Kahraman kart, kutucuk, rozet kalabalığı yok.
+4. **Önce anlam, sonra süs.** Her uygulamanın "Ne yapar?" ve üç adımlı "Nasıl çalışır?" metni var; kullanıcı başlamadan ne olacağını bilir.
+5. **Odyoloji dili görselde.** Sağ kulak kırmızı, sol kulak mavi; odyogram her yerde aynı; koklea spirali marka işareti.
+6. **Hareket ölçülü.** Giriş animasyonları kısa; ödül anı bir balon; sakin modda hepsi kısılır.
+7. **Büyük dokunma alanları.** Hasta ve aile için 48 pt altı hedef yok.
+
+## Navigasyon (3 sekme)
+- **Keşfet:** arama, "Günün vakası" tek satırı, 5 kategori kartı, Yapımcı Ol.
+- **Ağ:** akış (Arkadaşlar | Herkes), dizin, ilanlar, etkinlikler.
+- **Ben:** kimlik, üç sayı (seviye, XP, seri), rozetler, oynadıkların, profil kartı, ayarlar.
+
+## Kategoriler
+Öğren (mavi-yeşil) · Klinik Araçlar (yeşil) · Yarışmalar (altın) · Oyunlar (pembe-mor) · Hasta & Aile (mercan-turuncu). Her kategori kartında tek satır "ne işe yarar" ve uygulama sayısı.
 
 ## Tokenler
-Bkz. `mobile/src/core/theme/tokens.ts`. Gradyanlar: brand, violet, sunset, ocean, mint, ember, night, rose, gold. Kategori renkleri: Öğren=ocean, Klinik=mint, Yarış=gold, Oyun=rose, Hasta=sunset.
+`mobile/src/core/theme/tokens.ts`. Vurgu: mor #6C4CF1 (buton, aktif sekme), deniz yeşili #0E9C98 (ikincil). Metin #13162A, soluk #5D6378, en soluk #8C92A8. Gradyanlar yalnızca ikon rozetleri, kategori kartları ve paylaşım kartları için.
 
 ## Tipografi
-Sistem fontu (SF Pro), ağır başlıklar (800), sıkı harf aralığı. Display 34 / H1 26 / H2 20 / H3 17 / Body 15 / Small 13 / Tiny 11 büyük harf.
+Sistem fontu. H1 26/800, H2 20/700, H3 17/700, Body 15, Small 13, Tiny 11 büyük harf.
 
 ## Bileşenler
-Screen, Card (camsı veya gradyan), Button (primary gradyan, secondary cam, ghost, danger), Chip, SectionHeader, Stat, ProgressBar, Avatar (ad baş harfi + gradyan), IconBadge, Toast, Audiogram, ShareCard, MiniAppCard (row / tile / hero), CochleaMark.
+Screen, Card (beyaz, ince kenarlık), Button (primary gradyan, secondary gri, ghost), Chip, Stat, ProgressBar, Avatar, IconBadge, Toast, Audiogram, ShareCard, MiniAppCard (tek satır), CochleaMark.
 
-## Ekran kalıpları
-- **Bugün:** selam + seri, günlük hedef çubuğu, "bugün sana özel" hero kartı, seviye, yeni çıkanlar, Yapımcı Ol daveti.
-- **Keşfet:** arama, kategori çipleri, kategori başına yatay kaydırmalı kutucuklar.
-- **Mini uygulama girişi:** tam ekran gradyan kahraman alanı, yapımcı kartı, açıklama, "Başla".
-- **Çalıştırma kabuğu:** ince üst çubuk (kapat, ad, yapımcı), ödül balonu.
-
-## Uygulama ikonu (yapılacak)
-Koklea spirali, mor-turkuaz gradyan, siyah zemin; köşede küçük "X". 1024×1024 PNG `mobile/assets/icon.png` olarak değiştirilecek (şu an Expo'nun varsayılan ikonu).
+## Uygulama ikonu
+Beyaz zemin, mor-deniz yeşili koklea spirali, köşede küçük X. `mobile/assets/icon.png` (1024×1024).

@@ -13,7 +13,7 @@ export function EndCard({ hidden }: { hidden: number }) {
       <AppText variant="small" center muted>Ağ yarın yine burada.{hidden > 0 ? ` ${hidden} gönderi daha seni bekliyor; acelesi yok.` : ''}</AppText>
       <AppText variant="tiny" faint center>Sonsuz akış yok. Sınırı Ayarlar'dan değiştirebilirsin.</AppText>
       <View style={{ marginTop: 8, alignSelf: 'stretch' }}>
-        <Button title="Keşfet'e geç" icon="grid" variant="secondary" onPress={() => router.push('/(tabs)/kesfet' as Href)} full />
+        <Button title="Keşfet'e geç" icon="grid" variant="secondary" onPress={() => router.push('/(tabs)' as Href)} full />
       </View>
       <AppText variant="tiny" color={colors.textFaint}>aihearX · dopamin dengesi</AppText>
     </Card>

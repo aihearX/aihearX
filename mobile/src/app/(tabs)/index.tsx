@@ -1,115 +1,107 @@
-import React, { useMemo } from 'react';
-import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
-import { router } from 'expo-router';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import React, { useMemo, useState } from 'react';
+import { View, StyleSheet, TextInput, Pressable } from 'react-native';
+import { router, type Href } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Screen, AppText, Card, SectionHeader, MiniAppCard, Stat, ProgressBar, Avatar } from '@/core/ui';
-import { colors, gradients, space, radius } from '@/core/theme';
+import { Screen, AppText, Card, MiniAppCard, IconBadge, Avatar } from '@/core/ui';
+import { colors, radius, space } from '@/core/theme';
+import { CATEGORIES, allApps, appById } from '@/core/registry';
 import { useUser } from '@/core/store/user';
-import { useProgress, xpForLevel } from '@/core/store/progress';
-import { allApps, appsForRole, isNew } from '@/core/registry';
-import { dayKey, pickDaily } from '@/core/util/day';
-import { roleName } from '@/core/registry/roles';
+import { useProgress } from '@/core/store/progress';
+import { dayKey } from '@/core/util/day';
 
-const greet = () => { const h = new Date().getHours(); return h < 6 ? 'İyi geceler' : h < 12 ? 'Günaydın' : h < 18 ? 'İyi günler' : 'İyi akşamlar'; };
-
-/** "Bugün" sekmesi: günlük ritüel. Sonlu, kısa, kişisel. Dopamin dengesi: küçük hedef, net bitiş. */
-export default function Bugun() {
+/**
+ * Keşfet (ana sayfa): sade ve kategori odaklı.
+ * 1) Arama  2) Bugün için tek satır  3) Beş kategori kartı  4) Yapımcı Ol
+ */
+export default function Kesfet() {
+  const [q, setQ] = useState('');
   const profile = useUser((s) => s.profile)!;
-  const { xp, level, streak, daily, dailyGoal } = useProgress();
-  const todayDone = daily[dayKey()] ?? [];
+  const streak = useProgress((s) => s.streak);
+  const todayDone = useProgress((s) => s.daily[dayKey()]?.length ?? 0);
   const apps = allApps();
-  const forMe = appsForRole(profile.role);
-  const daily3 = useMemo(() => {
-    const pool = forMe.length >= 3 ? forMe : apps;
-    const picks: typeof pool = [];
-    for (let i = 0; picks.length < Math.min(3, pool.length) && i < pool.length * 2; i++) {
-      const a = pickDaily(pool, i * 7);
-      if (!picks.includes(a)) picks.push(a);
-    }
-    return picks;
-  }, [forMe, apps]);
-  const hero = daily3[0];
-  const newest = [...apps].filter(isNew).sort((a, b) => b.releasedAt.localeCompare(a.releasedAt)).slice(0, 6);
-  const lvlNow = xpForLevel(level), lvlNext = xpForLevel(level + 1);
-  const lvlPct = (xp - lvlNow) / Math.max(1, lvlNext - lvlNow);
-  const goalPct = Math.min(1, todayDone.length / dailyGoal);
+  const daily = appById('odyogramle');
+  const results = useMemo(() => {
+    const n = q.trim().toLowerCase();
+    if (!n) return [];
+    return apps.filter((a) => [a.name, a.tagline, a.description, ...a.tags].join(' ').toLowerCase().includes(n));
+  }, [q, apps]);
 
   return (
     <Screen>
       <View style={styles.top}>
-        <Pressable onPress={() => router.push('/(tabs)/profil')} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1 }}>
-          <Avatar name={profile.name} seed={profile.id} size={44} ring={streak > 0} />
-          <View style={{ flex: 1 }}>
-            <AppText variant="small" muted>{greet()}, {roleName(profile.role).toLowerCase()}</AppText>
-            <AppText variant="h2" numberOfLines={1}>{profile.name.split(' ')[0]}</AppText>
-          </View>
-        </Pressable>
-        <View style={styles.streak}>
-          <AppText variant="h3" color={streak > 0 ? colors.amber : colors.textFaint}>🔥 {streak}</AppText>
+        <View style={{ flex: 1 }}>
+          <AppText variant="h1">aihear<AppText variant="h1" color={colors.accent}>X</AppText></AppText>
+          <AppText variant="small" muted>Odyolojinin tamamı, tek uygulamada</AppText>
         </View>
+        <Pressable onPress={() => router.push('/(tabs)/profil' as Href)}>
+          <Avatar name={profile.name} seed={profile.id} size={40} />
+        </Pressable>
       </View>
 
-      <Animated.View entering={FadeInDown.duration(400)}>
-        <Card style={{ marginTop: space.lg }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <AppText variant="h3">Bugünün hedefi</AppText>
-            <AppText variant="small" color={goalPct >= 1 ? colors.mint : colors.textMuted}>{todayDone.length}/{dailyGoal} {goalPct >= 1 ? '· Tamam ✓' : ''}</AppText>
+      <View style={styles.search}>
+        <Ionicons name="search" size={18} color={colors.textFaint} />
+        <TextInput value={q} onChangeText={setQ} placeholder="Ne arıyorsun? (maskeleme, çınlama, vaka…)" placeholderTextColor={colors.textFaint} style={styles.input} autoCorrect={false} />
+        {q ? <Pressable onPress={() => setQ('')}><Ionicons name="close-circle" size={18} color={colors.textFaint} /></Pressable> : null}
+      </View>
+
+      {q ? (
+        <View style={{ gap: 10, marginTop: space.lg }}>
+          <AppText variant="tiny" faint>{results.length} sonuç</AppText>
+          {results.map((a) => <MiniAppCard key={a.id} app={a} />)}
+          {!results.length ? <AppText muted>Bulunamadı. Başka bir kelime dene.</AppText> : null}
+        </View>
+      ) : (
+        <>
+          {daily ? (
+            <Card onPress={() => router.push({ pathname: '/uygulama/[id]', params: { id: daily.id } })} padded={false} style={styles.today}>
+              <IconBadge icon="calendar" gradient={daily.gradient} size={40} />
+              <View style={{ flex: 1 }}>
+                <AppText variant="bodyStrong">Günün vakası</AppText>
+                <AppText variant="small" muted>{todayDone > 0 ? `Bugün ${todayDone} uygulama tamamladın` : 'Herkes aynı vakayı çözüyor; 6 tahmin hakkın var'}</AppText>
+              </View>
+              <View style={styles.streak}><AppText variant="small" color={streak > 0 ? colors.amber : colors.textFaint}>🔥 {streak}</AppText></View>
+            </Card>
+          ) : null}
+
+          <AppText variant="tiny" faint style={{ marginTop: space.xl, marginBottom: 10 }}>Kategoriler</AppText>
+          <View style={{ gap: 10 }}>
+            {CATEGORIES.map((c) => {
+              const count = apps.filter((a) => a.category === c.id).length;
+              return (
+                <Card key={c.id} onPress={() => router.push({ pathname: '/kategori/[id]', params: { id: c.id } })} padded={false} style={styles.cat}>
+                  <IconBadge icon={c.icon} gradient={c.gradient} size={48} />
+                  <View style={{ flex: 1 }}>
+                    <AppText variant="h3">{c.name}</AppText>
+                    <AppText variant="small" muted numberOfLines={2}>{c.what}</AppText>
+                    <AppText variant="tiny" faint style={{ marginTop: 4 }}>{count} uygulama</AppText>
+                  </View>
+                  <Ionicons name="chevron-forward" size={18} color={colors.textFaint} />
+                </Card>
+              );
+            })}
           </View>
-          <View style={{ marginTop: 10 }}><ProgressBar value={goalPct} gradient={goalPct >= 1 ? gradients.mint : gradients.brand} /></View>
-          <AppText variant="small" faint style={{ marginTop: 8 }}>
-            {goalPct >= 1 ? 'Bugünlük bu kadar yeter. Kulaklarını dinlendir.' : 'Küçük hedef, her gün. İki mini uygulama, 5 dakika.'}
-          </AppText>
-        </Card>
-      </Animated.View>
 
-      {hero ? (
-        <Animated.View entering={FadeInDown.delay(80).duration(400)}>
-          <SectionHeader title="Bugün sana özel" subtitle="Her gün 00:00'da yenilenir" />
-          <MiniAppCard app={hero} size="hero" />
-          <View style={{ gap: 10, marginTop: 10 }}>{daily3.slice(1).map((a) => <MiniAppCard key={a.id} app={a} />)}</View>
-        </Animated.View>
-      ) : null}
-
-      <Animated.View entering={FadeInDown.delay(160).duration(400)}>
-        <SectionHeader title="Seviye" subtitle={`Seviye ${level} · ${xp} XP`} />
-        <Card>
-          <ProgressBar value={lvlPct} />
-          <View style={{ flexDirection: 'row', gap: 10, marginTop: 14 }}>
-            <Stat label="XP" value={xp} icon="flash" />
-            <Stat label="Seri" value={`${streak} gün`} icon="flame" color={colors.amber} />
-            <Stat label="Sonraki" value={`${Math.max(0, lvlNext - xp)}`} icon="trending-up" color={colors.mint} />
-          </View>
-        </Card>
-      </Animated.View>
-
-      {newest.length ? (
-        <Animated.View entering={FadeInDown.delay(240).duration(400)}>
-          <SectionHeader title="Yeni çıkanlar" action="Tümü" onAction={() => router.push('/(tabs)/kesfet')} />
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
-            {newest.map((a) => <MiniAppCard key={a.id} app={a} size="tile" />)}
-          </ScrollView>
-        </Animated.View>
-      ) : null}
-
-      <Animated.View entering={FadeInDown.delay(320).duration(400)}>
-        <Card onPress={() => router.push('/yapimci-ol')} gradient={gradients.night} style={{ marginTop: space.xl }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+          <Card onPress={() => router.push('/yapimci-ol')} padded={false} style={styles.idea}>
             <View style={styles.ideaIcon}><Ionicons name="bulb" size={22} color={colors.amber} /></View>
             <View style={{ flex: 1 }}>
-              <AppText variant="h3">Aklındaki yazılım fikri çürümesin</AppText>
-              <AppText variant="small" muted>Başvur, değerlendirelim, uygunsa ücretsiz kodlayıp adınla yayınlayalım.</AppText>
+              <AppText variant="bodyStrong">Yapımcı Ol</AppText>
+              <AppText variant="small" muted>Fikrini gönder; uygunsa ücretsiz kodlayıp senin adınla yayınlayalım.</AppText>
             </View>
             <Ionicons name="chevron-forward" size={18} color={colors.textFaint} />
-          </View>
-        </Card>
-      </Animated.View>
+          </Card>
+        </>
+      )}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   top: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  streak: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: radius.pill, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
-  ideaIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: 'rgba(255,194,92,0.14)', alignItems: 'center', justifyContent: 'center' },
+  search: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: space.lg, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, borderRadius: radius.md, paddingHorizontal: 12, height: 46 },
+  input: { flex: 1, color: colors.text, fontSize: 15 },
+  today: { marginTop: space.lg, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12 },
+  streak: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: radius.pill, backgroundColor: colors.surface },
+  cat: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14 },
+  idea: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, marginTop: space.xl, backgroundColor: colors.bg2 },
+  ideaIcon: { width: 48, height: 48, borderRadius: 15, backgroundColor: '#FFF4DB', alignItems: 'center', justifyContent: 'center' },
 });

@@ -26,7 +26,7 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.bg }}>
       <SafeAreaProvider>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg }, animation: 'fade_from_bottom' }}>
           <Stack.Protected guard={!signedIn}>
             <Stack.Screen name="(auth)/giris" />
@@ -37,6 +37,7 @@ export default function RootLayout() {
           <Stack.Protected guard={signedIn && onboarded}>
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="uygulama/[id]/index" />
+            <Stack.Screen name="kategori/[id]" />
             <Stack.Screen name="uygulama/[id]/calistir" options={{ animation: 'slide_from_right', gestureEnabled: false }} />
             <Stack.Screen name="yapimci-ol" options={{ presentation: 'modal' }} />
             <Stack.Screen name="kullanici/[id]" />

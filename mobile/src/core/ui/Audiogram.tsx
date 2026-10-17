@@ -46,7 +46,7 @@ export function Audiogram({ data, width = 320, height = 260, showBone = true, hi
   return (
     <View style={{ width, height }}>
       <Svg width={width} height={height}>
-        <Rect x={padL} y={padT} width={plotW} height={plotH} fill="rgba(255,255,255,0.03)" rx={8} />
+        <Rect x={padL} y={padT} width={plotW} height={plotH} fill={colors.bg2} rx={8} />
         {speechBanana ? (
           <Path
             d={`M${x(0)} ${y(28)} C ${x(1)} ${y(16)}, ${x(2.4)} ${y(14)}, ${x(3.6)} ${y(22)} C ${x(4.4)} ${y(30)}, ${x(5)} ${y(42)}, ${x(5)} ${y(50)} C ${x(4.4)} ${y(60)}, ${x(3)} ${y(62)}, ${x(2)} ${y(58)} C ${x(1)} ${y(55)}, ${x(0.3)} ${y(48)}, ${x(0)} ${y(28)} Z`}

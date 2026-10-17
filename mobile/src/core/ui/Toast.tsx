@@ -33,5 +33,5 @@ export function ToastHost() {
 }
 const styles = StyleSheet.create({
   wrap: { position: 'absolute', top: 64, left: 0, right: 0, alignItems: 'center', zIndex: 100 },
-  toast: { flexDirection: 'row', gap: 8, alignItems: 'center', backgroundColor: colors.bg3, borderColor: colors.borderStrong, borderWidth: 1, paddingHorizontal: 16, paddingVertical: 10, borderRadius: radius.pill },
+  toast: { flexDirection: 'row', gap: 8, alignItems: 'center', backgroundColor: colors.bg, borderColor: colors.border, shadowColor: '#13162A', shadowOpacity: 0.12, shadowRadius: 12, shadowOffset: { width: 0, height: 6 }, elevation: 4, borderWidth: 1, paddingHorizontal: 16, paddingVertical: 10, borderRadius: radius.pill },
 });

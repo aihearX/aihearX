@@ -3,3 +3,4 @@ export * from './categories';
 export * from './makers';
 export * from './roles';
 export * from './registry';
+export * from './howItWorks';
