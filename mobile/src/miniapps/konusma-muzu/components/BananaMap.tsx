@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
-import { Audiogram } from '@/core/ui';
-import { AppText } from '@/core/ui';
+import { Audiogram, AppText } from '@/core/ui';
 import { colors, radius } from '@/core/theme';
 import { MAP, PHONEMES, freqToX, dbToY, type Phoneme, type LossProfile } from '../data';
 
