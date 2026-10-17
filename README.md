@@ -1,31 +1,54 @@
-# aiHearX — İşitme Nabzı
+# aihearX
 
-Odyoloji camiasında viral olacak, herkesi tek bir araca bağlayacak ürün
-fikrinin notları. Üç tur fikir fırtınasından sonra karar: **İşitme Nabzı**.
+**Odyolojinin tamamı tek uygulamada.** Odyologlar, odyoloji öğrencileri, odyometristler, KBB hekimleri, işitme kaybı ve denge sorunu yaşayanlar ve aileleri için süper uygulama. İçinde birbirinden bağımsız 18 mini uygulama var; hepsi tek üyelikle açılır, her birinin yapımcısı ekranda yazar.
 
-## Tek cümle
+Yapımcı: **Sebahattin Ünlü** · aiHear. Instagram: **aiHear Ünlü** · Kulaktan Kulağa.
 
-**İşitme Nabzı**, dünyada ilk kez işitmeyi tek seferlik bir test olmaktan
-çıkarıp nabız gibi **her gün izlenen bir yaşamsal işarete** dönüştürür:
-hastalar günde 60 saniyede işitme nabzını ölçer, odyologlar her sabah
-hastalarının "servis listesine" bakar, yapay zekâ ani düşüşü saatler içinde
-yakalayıp odyoloğa haber verir.
+## Depo yapısı
 
-## Üç ölçüt
-
-| Ölçüt | Karşılığı |
+| Klasör | İçerik |
 |---|---|
-| **Herkesi etkilesin** | "İşitmenin nabzı" kavramı; Türkiye'nin canlı işitme sağlığı ekranı; ani işitme kaybının tedavi penceresi kapanmadan yakalandığı ilk hasta hikâyesi |
-| **Çok faydalı** | Ani sensörinöral işitme kaybında erken tedavi şansı; cihazı çekmecede kalan hastanın terk etmeden önce yakalanması; her odyoloğa hastalarıyla ilgili canlı bir panel |
-| **Düzenli bakılsın** | Hasta için günlük nabız ve seri; odyolog için her sabah bakılan uyarı listesi; öğrenci ve akademisyen için canlı tarama ve veri paneli |
+| `mobile/` | Expo (React Native, TypeScript) uygulaması. iOS öncelikli; EAS ile App Store'a gönderilir. |
+| `supabase/schema.sql` | Veritabanı: profiller, ilerleme, sonuçlar, ağ, lig görünümleri, yapımcı başvuruları, RLS. |
+| `docs/` | Mimari, tasarım dili, App Store listesi, yol haritası. |
+| `marketing/` | Viral yayılma stratejisi ve 22 hazır Reels senaryosu. |
 
-## Dosyalar
+## Kategoriler ve mini uygulamalar
 
-| Dosya | İçerik |
+| Kategori | Uygulamalar |
 |---|---|
-| [`docs/01-fikir-firtinasi.md`](docs/01-fikir-firtinasi.md) | Üç turun tamamı: 20+ fikir, puanlama, neden elendikleri |
-| [`docs/02-isitme-nabzi.md`](docs/02-isitme-nabzi.md) | **Ürün tasarımı**: hasta yüzü, odyolog yüzü, günlük ritüel, yapay zekâ triyaj, viral döngüler, dünyada neden yok |
-| [`docs/03-teknik-mimari.md`](docs/03-teknik-mimari.md) | Ölçüm yöntemi (gürültüde rakam testi), gürültü dozu, triyaj motoru, veri gizliliği, teknik yığın, maliyet |
-| [`docs/04-yol-haritasi.md`](docs/04-yol-haritasi.md) | 60 günlük MVP, lansman, ölçülecek metrikler, gelir |
-| [`docs/05-cati-sistem.md`](docs/05-cati-sistem.md) | **Çatı sistem**: aiHear kimliği, odyolog kodu, vitrin, atıf motoru, paylaşım kiti; mini uygulamaların odyolog eliyle yayılma sistemi |
-| `docs/arsiv/` | Elenen Odyogramle fikrinin ayrıntılı notları (referans için) |
+| **Öğren** | Odyogram Okulu · Timpanogram Atlası · OdyoKartlar |
+| **Klinik Araçlar** | Maskeleme Ustası · Kazanç Hedefi · Anket Merkezi (HHIE-S, THI, DHI) |
+| **Yarışmalar & Bulmacalar** | Odyogramle · OdyoKelime · Haftalık Lig |
+| **Oyunlar** | Frekans Avı · Desibel Dedektifi · Kulak Refleksi · Hangi Odyolog Tipisin? |
+| **Hasta & Aile** | Kulağın Kaç Yaşında? · Konuşma Muzu · Çınlama Eşleştirici · Denge Günlüğü · Gürültü Ölçer |
+| **Ağ** | Akış (Arkadaşlar / Herkes) · Profiller · Odyolog Dizini · İş İlanları · Etkinlikler |
+| **Yapımcı Ol** | "Aklınızdaki yazılım fikri çürüyüp gitmesin": başvur, uygunsa ücretsiz kodlayıp adınla yayınlayalım |
+
+## Çalıştırma
+
+```bash
+cd mobile
+npm install --legacy-peer-deps
+cp .env.example .env            # Supabase boşsa uygulama yerel modda çalışır
+npx expo start                  # Expo Go veya geliştirme derlemesi
+npm run typecheck               # tsc --noEmit
+```
+
+Native modüller (ses, Apple ile giriş, blur) Expo Go'da sınırlı çalışır; gerçek test için geliştirme derlemesi:
+
+```bash
+npx eas-cli@latest build --profile development --platform ios
+```
+
+App Store gönderimi: `npm run build:ios` sonra `npm run submit:ios` (`eas.json` içindeki Apple bilgilerini doldur).
+
+## Ürün ilkeleri
+
+1. **Tek üyelik.** Alt uygulamalarda ayrı hesap yok.
+2. **Yapımcı görünür.** Her uygulama bir insanın adıyla çıkar.
+3. **Her sonuç bir kart.** Paylaşılabilir, aihearX imzalı.
+4. **Dopamin dengesi.** Küçük günlük hedef, sonlu akış, sakin mod, sessiz saatler.
+5. **Tanı yerine geçmez.** Her sağlık sonucunda uyarı.
+
+Ayrıntılar: [`docs/mimari.md`](docs/mimari.md) · [`docs/tasarim.md`](docs/tasarim.md) · [`docs/app-store.md`](docs/app-store.md) · [`marketing/viral-strateji.md`](marketing/viral-strateji.md)

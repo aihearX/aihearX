@@ -1,0 +1,70 @@
+{
+  "expo": {
+    "name": "aihearX",
+    "slug": "aihearx",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "aihearx",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#070A12",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#070A12"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.aihear.aihearx",
+      "usesAppleSignIn": true,
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Gürültü Ölçer ve ses tabanlı testler için mikrofon erişimi gerekir. Ses kaydedilmez.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.aihear.aihearx",
+      "adaptiveIcon": {
+        "backgroundColor": "#070A12",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-audio",
+      "expo-secure-store",
+      "expo-image",
+      "expo-web-browser",
+      "expo-font",
+      "expo-sharing",
+      "expo-apple-authentication",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#070A12",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 180
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}
