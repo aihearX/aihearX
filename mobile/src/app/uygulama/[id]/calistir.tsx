@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { AppText, Button, Screen } from '@/core/ui';
+import { AppText, Button, Screen, ErrorBoundary } from '@/core/ui';
 import { colors, radius } from '@/core/theme';
 import { appById } from '@/core/registry';
 import { useProgress } from '@/core/store/progress';
@@ -47,7 +47,9 @@ export default function UygulamaCalistir() {
         <View style={[styles.btn, { opacity: 0 }]} />
       </View>
       <View style={{ flex: 1 }}>
-        <Component onResult={onResult} role={role} />
+        <ErrorBoundary title={app.name}>
+          <Component onResult={onResult} role={role} />
+        </ErrorBoundary>
       </View>
       {reward ? (
         <Animated.View entering={FadeInUp} exiting={FadeOutUp} pointerEvents="none" style={[styles.reward, { top: insets.top + 60 }]}>

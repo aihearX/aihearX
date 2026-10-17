@@ -3,7 +3,7 @@ import { View, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import type { ComponentType } from 'react';
-import { AppText, Button, Card, Stat } from '@/core/ui';
+import { AppText, Button, Card, Stat, ErrorBoundary } from '@/core/ui';
 import { colors, space, type Gradient } from '@/core/theme';
 import { GameResult } from '@/core/game';
 import { useSettings } from '@/core/store/settings';
@@ -70,7 +70,9 @@ export function ArcadeShell({ Dom, title, tagline, howTo, gradient, makerName, b
   if (phase === 'play') {
     return (
       <View style={{ flex: 1, backgroundColor: colors.bg }}>
-        <Dom onEvent={onEvent} seed={seed} mode={mode} sounds={sounds} dom={{ style: { flex: 1 }, scrollEnabled: false, bounces: false, matchContents: false }} />
+        <ErrorBoundary title={`${title} (oyun motoru)`} onReset={() => setPhase('intro')}>
+          <Dom onEvent={onEvent} seed={seed} mode={mode} sounds={sounds} dom={{ style: { flex: 1 }, scrollEnabled: false, bounces: false, matchContents: false }} />
+        </ErrorBoundary>
         <Pressable onPress={() => setPhase('intro')} style={styles.quit}><Ionicons name="close" size={18} color={colors.text} /></Pressable>
       </View>
     );

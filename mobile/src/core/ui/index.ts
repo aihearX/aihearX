@@ -13,3 +13,4 @@ export * from './Audiogram';
 export * from './ShareCard';
 export * from './MiniAppCard';
 export * from './CochleaMark';
+export * from './ErrorBoundary';
