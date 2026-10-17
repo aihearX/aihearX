@@ -6,33 +6,26 @@
 **Yaş:** 4+ (sağlık içeriği; tanı iddiası yok)
 
 ## Tanıtım metni (170)
-Odyologlar, öğrenciler ve işitme sağlığını merak eden herkes için: öğren, oyna, yarış, bağlan. 18+ mini uygulama, tek üyelik.
+Odyologlar, öğrenciler ve kulağını merak eden herkes için: oyna, öğren, bağlan. 10 derin mini uygulama, tek üyelik.
 
 ## Açıklama
-aihearX, odyoloji dünyasının ilk süper uygulaması. İçinde birbirinden bağımsız onlarca mini uygulama var ve hepsi tek bir üyelikle açılıyor.
+aihearX, odyoloji dünyasının süper uygulaması. İçinde az ama derin on mini uygulama var ve hepsi tek üyelikle açılıyor.
 
-ÖĞREN
-• Odyogram Okulu: odyogram yorumlamayı seviye seviye öğren
-• Timpanogram Atlası: eğriyi kendin çiz, tipi anla
-• OdyoKartlar: aralıklı tekrarla terimleri unutma
+OYUNLAR (herkes için)
+• Ses Dedektifi: gizemli sesi süre bitmeden tahmin et
+• Ton Hafızası: notaları hatırla; ileri seviyede sadece kulağınla
+• Perde Düellosu: hangisi daha ince? Arkadaşınla aynı telefonda düello
+• Gürültü Avcısı: gürültü içinde rakamları yakala
+• Kulağın Kaç Yaşında?: ince tonlarla kulak yaşını öğren, paylaş
 
-KLİNİK ARAÇLAR
+KLİNİK (odyolog ve öğrenci)
+• Odyogramle: her gün tüm dünyada aynı vaka, 6 tahmin; antrenman modu
 • Maskeleme Ustası: ne zaman, ne kadar maskeleme?
-• Kazanç Hedefi: eğitim amaçlı işitme cihazı hedefleri
 • Anket Merkezi: HHIE-S, THI, DHI puanlama ve yorum
 
-YARIŞMALAR
-• Odyogramle: her gün tüm dünyada aynı vaka, 6 tahmin
-• OdyoKelime: odyoloji terimleriyle günlük kelime bulmacası
-• Haftalık Lig: üniversiteler arası sıralama
-
-OYUNLAR
-• Frekans Avı, Desibel Dedektifi, Kulak Refleksi
-• Hangi Odyolog Tipisin?
-
 HASTA & AİLE
-• Kulağın Kaç Yaşında? • Konuşma Muzu • Çınlama Eşleştirici
-• Denge Günlüğü • Gürültü Ölçer
+• Çınlama Eşleştirici: çınlamanı bul, kaydet, ses terapisi dinle
+• Denge Günlüğü: baş dönmesi ataklarını kaydet, hekimine özet götür
 
 AĞ
 Odyolojinin kendi sosyal ağı: vakalar, sorular, iş ilanları, kongreler. Sadece arkadaşlarını ya da herkesi gör.
@@ -42,14 +35,14 @@ Aklındaki yazılım fikri çürüyüp gitmesin. Başvur; uygunsa ücretsiz kodl
 
 Her mini uygulamanın bir yapımcısı var ve adı ekranda. Dopamin dengesi ilkesiyle tasarlandı: günlük hedef küçük, akış sonlu, sessiz saatler var.
 
-Bu uygulama tıbbi tanı yerine geçmez. Sonuçlarını bir uzmanla değerlendir.
+Bu uygulama tıbbi tanı yerine geçmez. Oyunlar işitme testi değildir.
 
 ## Anahtar kelimeler (100)
 odyoloji,odyolog,işitme,işitme testi,odyogram,çınlama,tinnitus,vertigo,denge,kbb,işitme cihazı,kulak
 
 ## Ekran görüntüleri (6)
 1. Bugün ekranı: "Günün hedefi" + hero kart
-2. Odyogramle: emoji odyogram paylaşım kartı
+2. Ses Dedektifi oyun ekranı
 3. Kulağın Kaç Yaşında? sonuç kartı
 4. Keşfet: kategoriler
 5. Ağ akışı: Arkadaşlar | Herkes

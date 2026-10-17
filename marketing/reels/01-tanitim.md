@@ -5,7 +5,7 @@ Süre 18 sn · Yayın L-7 · Amaç: merak ve bekleme listesi
 Ekran metni: "6 aydır gece gece yazıyorum"
 
 **Sahneler**
-- 2-6: Masada telefon, ekran kapalı. Elle kapatılmış bir simge. "İçinde 18 ayrı uygulama var. Hepsi odyoloji."
+- 2-6: Masada telefon, ekran kapalı. Elle kapatılmış bir simge. "İçinde 10 ayrı uygulama var. Hepsi odyoloji."
 - 6-10: Hızlı kesmeler: odyogram çizimi, bir skor patlaması, bir lig tablosu (bulanık).
 - 10-14: "Öğrenciye, odyoloğa, KBB'ye, hastaya. Ve hepsi tek üyelik."
 - 14-18: "Bir hafta sonra. Takipte kal." Ekran: "aihearX · 24 Ekim"

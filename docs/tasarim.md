@@ -15,7 +15,7 @@
 - **Ben:** kimlik, üç sayı (seviye, XP, seri), rozetler, oynadıkların, profil kartı, ayarlar.
 
 ## Kategoriler
-Öğren (mavi-yeşil) · Klinik Araçlar (yeşil) · Yarışmalar (altın) · Oyunlar (pembe-mor) · Hasta & Aile (mercan-turuncu). Her kategori kartında tek satır "ne işe yarar" ve uygulama sayısı.
+Oyunlar (pembe-mor) · Klinik (mavi-yeşil) · Hasta & Aile (mercan-turuncu). Her kategori kartında tek satır "ne işe yarar" ve uygulama sayısı.
 
 ## Tokenler
 `mobile/src/core/theme/tokens.ts`. Vurgu: mor #6C4CF1 (buton, aktif sekme), deniz yeşili #0E9C98 (ikincil). Metin #13162A, soluk #5D6378, en soluk #8C92A8. Gradyanlar yalnızca ikon rozetleri, kategori kartları ve paylaşım kartları için.

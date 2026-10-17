@@ -1,6 +1,6 @@
 # aihearX
 
-**Odyolojinin tamamı tek uygulamada.** Odyologlar, odyoloji öğrencileri, odyometristler, KBB hekimleri, işitme kaybı ve denge sorunu yaşayanlar ve aileleri için süper uygulama. İçinde birbirinden bağımsız 18 mini uygulama var; hepsi tek üyelikle açılır, her birinin yapımcısı ekranda yazar.
+**Odyolojinin tamamı tek uygulamada.** Odyologlar, odyoloji öğrencileri, odyometristler, KBB hekimleri, işitme kaybı ve denge sorunu yaşayanlar, aileleri ve kulağını merak eden herkes için süper uygulama. Az ama derin: 10 mini uygulama, tek üyelik, her birinin yapımcısı ekranda.
 
 Yapımcı: **Sebahattin Ünlü** · aiHear. Instagram: **aiHear Ünlü** · Kulaktan Kulağa.
 
@@ -11,19 +11,19 @@ Yapımcı: **Sebahattin Ünlü** · aiHear. Instagram: **aiHear Ünlü** · Kula
 | `mobile/` | Expo (React Native, TypeScript) uygulaması. iOS öncelikli; EAS ile App Store'a gönderilir. |
 | `supabase/schema.sql` | Veritabanı: profiller, ilerleme, sonuçlar, ağ, lig görünümleri, yapımcı başvuruları, RLS. |
 | `docs/` | Mimari, tasarım dili, App Store listesi, yol haritası. |
-| `marketing/` | Viral yayılma stratejisi ve 22 hazır Reels senaryosu. |
+| `marketing/` | Viral yayılma stratejisi ve hazır Reels senaryoları. |
 
 ## Kategoriler ve mini uygulamalar
 
 | Kategori | Uygulamalar |
 |---|---|
-| **Öğren** | Odyogram Okulu · Timpanogram Atlası · OdyoKartlar |
-| **Klinik Araçlar** | Maskeleme Ustası · Kazanç Hedefi · Anket Merkezi (HHIE-S, THI, DHI) |
-| **Yarışmalar & Bulmacalar** | Odyogramle · OdyoKelime · Haftalık Lig |
-| **Oyunlar** | Frekans Avı · Desibel Dedektifi · Kulak Refleksi · Hangi Odyolog Tipisin? |
-| **Hasta & Aile** | Kulağın Kaç Yaşında? · Konuşma Muzu · Çınlama Eşleştirici · Denge Günlüğü · Gürültü Ölçer |
+| **Oyunlar** (herkes için) | Ses Dedektifi · Ton Hafızası · Perde Düellosu · Gürültü Avcısı · Kulağın Kaç Yaşında? |
+| **Klinik** (odyolog ve öğrenci) | Odyogramle (günün vakası + antrenman) · Maskeleme Ustası · Anket Merkezi (HHIE-S, THI, DHI) |
+| **Hasta & Aile** | Çınlama Eşleştirici · Denge Günlüğü |
 | **Ağ** | Akış (Arkadaşlar / Herkes) · Profiller · Odyolog Dizini · İş İlanları · Etkinlikler |
 | **Yapımcı Ol** | "Aklınızdaki yazılım fikri çürüyüp gitmesin": başvur, uygunsa ücretsiz kodlayıp adınla yayınlayalım |
+
+Oyunlar ortak bir oyun çekirdeği kullanır (`mobile/src/core/game`): skor, can, kombo, süre, 3-2-1 geri sayımı, doğru/yanlış flaşı, uçan puan, rütbeler (Çırak Kulak → Koklea Efsanesi), sentezlenmiş ses efektleri, rekor ve paylaşım kartı. Kalite çıtası: `mobile/GAME_GUIDE.md`.
 
 ## Çalıştırma
 

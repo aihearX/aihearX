@@ -43,6 +43,7 @@ mobile/
     audio/                 WAV sentezi ve oynatma
     store/                 user, progress, settings
     auth/                  Supabase istemcisi, Apple/e-posta eylemleri
+  src/core/game/         oyun çekirdeği: HUD, geri sayım, flaş, puan, sonuç, rütbe, sfx
   src/miniapps/<id>/       her mini uygulama: manifest.ts + App.tsx (+ store, components)
   src/network/             ağ modülü (akış, profil, dizin, ilanlar, etkinlikler)
 supabase/schema.sql        veritabanı

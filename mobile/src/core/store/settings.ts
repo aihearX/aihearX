@@ -12,12 +12,13 @@ type State = {
   feedLimit: number;           // bir oturumda gösterilecek en fazla gönderi
   quietHours: { from: number; to: number } | null;
   haptics: boolean;
+  sounds: boolean;             // oyun ses efektleri
   set: (p: Partial<State>) => void;
 };
 
 export const useSettings = create<State>()(
   persist(
-    (set) => ({ calmMode: false, feedScope: 'all', feedLimit: 30, quietHours: { from: 23, to: 7 }, haptics: true, set: (p) => set(p) }),
+    (set) => ({ calmMode: false, feedScope: 'all', feedLimit: 30, quietHours: { from: 23, to: 7 }, haptics: true, sounds: true, set: (p) => set(p) }),
     { name: 'aihearx.settings', storage: jsonStorage() },
   ),
 );
