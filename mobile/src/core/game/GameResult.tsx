@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { AppText, Button, Card, ShareCard, Stat } from '@/core/ui';
 import { colors, space, type Gradient } from '@/core/theme';
