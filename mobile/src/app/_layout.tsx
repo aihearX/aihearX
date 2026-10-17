@@ -43,6 +43,9 @@ export default function RootLayout() {
             <Stack.Screen name="kullanici/[id]" />
             <Stack.Screen name="gonderi/yeni" options={{ presentation: 'modal' }} />
             <Stack.Screen name="ayarlar" />
+            <Stack.Screen name="ag/dizin" />
+            <Stack.Screen name="ag/ilanlar" />
+            <Stack.Screen name="ag/etkinlikler" />
           </Stack.Protected>
         </Stack>
         <ToastHost />
