@@ -27,7 +27,10 @@ export function usePairPlayer() {
       const p = await playSignal(renderPair(t), 1);
       if (id !== run.current) { p.stop(); return false; }
       playback.current = p;
-    } catch { return false; }
+    } catch {
+      // Ses üretilemedi/çalınamadı: akış yine de ilerlesin (cevap alanı açılsın), aksi halde tur askıda kalır.
+      if (id !== run.current) return false;
+    }
     const later = (fn: () => void, ms: number) => { timers.current.push(setTimeout(fn, ms)); };
     setSounding(1);
     later(() => setSounding(0), TONE_SEC * 1000);

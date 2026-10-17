@@ -157,6 +157,9 @@ export function useTonGame(onFinish: (s: Summary) => void) {
   const continueGame = useCallback(() => {
     const s = g.current;
     if (!s.alive || s.turn !== 'reveal' || !s.song) return;
+    // Perde açılır açılmaz dokunulursa bekleyen ritimli çalım (900 ms) zamanlayıcısı hâlâ duruyor olabilir;
+    // o sonradan çalışırsa yeni turun dinleme çalımını iptal eder ve oyun "Dinle…"de askıda kalır.
+    clearTimers();
     stopPlayer();
     setReveal(null);
     const last = s.phrase >= s.spans.length - 1;
