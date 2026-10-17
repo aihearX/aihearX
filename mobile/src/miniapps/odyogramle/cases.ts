@@ -4,6 +4,7 @@ import type { DxCategory, Laterality } from './diagnoses';
 /**
  * Öğretici kompozit vakalar; gerçek hasta verisi değildir.
  * Eşikler dB HL, sıra 250-500-1000-2000-4000-8000 Hz. null = ölçülmedi.
+ * Tek taraflı kayıplarda eşikler gerekli yerlerde maskelenmiş kabul edilir.
  * İpucu sırası: refleksler, konuşma testleri, OAE, ABR/vestibüler, görüntüleme.
  */
 export type Case = {
@@ -18,6 +19,8 @@ export type Case = {
   laterality: Laterality;
   keyFreqs: number[];
   explanation: string;
+  /** Üç "öğretici nokta"; sonuç ekranında madde madde. */
+  teaching: [string, string, string];
   source: string;
 };
 
@@ -25,6 +28,7 @@ const N = 'A (normal)';
 const KATZ = 'Katz, Handbook of Clinical Audiology, 7. baskı';
 const GELFAND = 'Gelfand, Essentials of Audiology, 4. baskı';
 const CUMMINGS = 'Cummings Otolaryngology, 7. baskı';
+const JCIH = 'JCIH 2019 Position Statement';
 
 export const CASES: Case[] = [
   {
@@ -35,6 +39,7 @@ export const CASES: Case[] = [
     hints: ['Akustik refleksler 500-2000 Hz bilateral mevcut, 4 kHz alınamadı.', 'SRT sağ 25 / sol 30 dB HL. WRS sağ %76, sol %72; eşiklerle uyumlu.', 'DPOAE 2 kHz üstünde bilateral alınamadı.', 'ABR dalga V latansları bilateral simetrik, normal sınırlarda.', 'Görüntüleme istenmedi.'],
     answer: 'presbycusis', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [2000, 4000, 8000],
     explanation: 'Bilateral, simetrik, yüksek frekanslara doğru eğimli sensörinöral kayıp; yaş ile uyumlu. WRS eşiklerle orantılı, asimetri yok; retrokoklear patoloji düşündürmez.',
+    teaching: ['Simetri + eğimli konfigürasyon + yaş: presbiakuzinin üç ayağı.', 'WRS eşiklerle orantılıysa koklear; orantısız düşükse retrokokleari sorgula.', 'Çınlama tek başına alarm değildir; asimetrik ve tek taraflı olduğunda alarmdır.'],
     source: KATZ,
   },
   {
@@ -45,6 +50,7 @@ export const CASES: Case[] = [
     hints: ['Refleksler 500-2000 Hz mevcut.', 'WRS bilateral %92; sessizde konuşma iyi.', 'DPOAE 3-6 kHz bantlarında alınamadı, alçak frekanslarda mevcut.', 'ABR normal.', 'Görüntüleme endikasyonu yok.'],
     answer: 'noise_induced', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [4000],
     explanation: '4 kHz çentiği ve 8 kHz\'de toparlanma gürültüye bağlı işitme kaybının klasik imzasıdır; öykü destekler.',
+    teaching: ['Çentik 3-6 kHz\'de olur; 8 kHz\'de toparlanma presbiakuziden ayırır.', 'Geçici eşik kayması (vardiya sonrası dolgunluk) kalıcı kaybın habercisidir.', 'Koruyucu kullanımı ve yıllık takip odyogramı: önlenebilir tek SNİK nedeni.'],
     source: 'NIOSH Criteria for a Recommended Standard: Occupational Noise Exposure',
   },
   {
@@ -55,6 +61,7 @@ export const CASES: Case[] = [
     hints: ['Akustik refleksler bilateral alınamadı.', 'SRT bilateral 35 dB HL; WRS %100.', 'TEOAE bilateral alınamadı (iletim komponenti).', 'ABR istenmedi.', 'Otoskopi: zar mat, hava-sıvı seviyesi; adenoid hipertrofisi şüphesi.'],
     answer: 'otitis_media_effusion', category: 'conductive', laterality: 'bilateral', keyFreqs: [250, 500, 1000],
     explanation: 'Düz/alçak frekans ağırlıklı iletim tipi kayıp, tip B timpanogram ve normal kanal hacmi efüzyonu işaret eder. Çocuklarda en sık iletim tipi kayıp nedeni.',
+    teaching: ['Tip B + normal hacim = sıvı; tip B + büyük hacim = perforasyon/tüp.', 'İletim kaybında WRS yüksek kalır; ses yeter ki ulaşsın.', 'Üç ay bekle-gör, dil ve okul gelişimi takip; kalıcıysa tüp.'],
     source: 'AAO-HNS Clinical Practice Guideline: Otitis Media with Effusion (2016)',
   },
   {
@@ -65,6 +72,7 @@ export const CASES: Case[] = [
     hints: ['Akustik refleksler bilateral alınamadı; erken dönemde "on-off" etkisi.', 'SRT bilateral 40 dB HL; WRS %100.', 'OAE bilateral alınamadı.', 'ABR: dalga latansları iletim kaybıyla uyumlu kaymış, interpeak normal.', 'Temporal BT: fissula ante fenestram\'da otospongiotik odak.'],
     answer: 'otosclerosis', category: 'conductive', laterality: 'bilateral', keyFreqs: [250, 500, 1000, 2000],
     explanation: 'Hava-kemik aralığı, 2 kHz\'de kemik yolunda Carhart çentiği, tip As ve refleks yokluğu; aile öyküsü ve gebelikle ilerleme otosklerozu destekler.',
+    teaching: ['Carhart çentiği gerçek koklear kayıp değil, mekanik artefakttır; cerrahi sonrası kemik yolu "düzelir".', 'Paracusis Willisii: gürültüde daha iyi duyma, iletim kaybının klasik ipucu.', 'Tip As + refleks yok + sağlam zar: stapes fiksasyonu düşün.'],
     source: CUMMINGS,
   },
   {
@@ -75,6 +83,7 @@ export const CASES: Case[] = [
     hints: ['Refleksler bilateral mevcut; solda eşikler yükselmiş ama alınabiliyor.', 'SRT sol 40 dB HL; WRS sol %80, sağ %100.', 'DPOAE solda alçak frekanslarda alınamadı.', 'ABR normal; cVEMP solda amplitüd düşük; kalorik testte sol zayıflık %35.', 'MRG: iç kulak ve pontoserebellar köşe normal.'],
     answer: 'meniere', category: 'sensorineural', laterality: 'left', keyFreqs: [250, 500, 1000],
     explanation: 'Tek taraflı, alçak frekans ağırlıklı yükselen SNİK, dalgalanma ve epizodik vertigo üçlüsü Ménière hastalığının tanımlayıcı tablosudur.',
+    teaching: ['Yükselen (alçak frekans) SNİK + dalgalanma: hidrops düşündürür.', 'Tanı klinik kriterlerle konur; 20 dk-12 saat süren ataklar şart.', 'Tek taraflı SNİK\'te MRG retrokokleari dışlamak için yine gerekir.'],
     source: 'Bárány Society Diagnostic Criteria for Menière\'s Disease (2015)',
   },
   {
@@ -85,6 +94,7 @@ export const CASES: Case[] = [
     hints: ['Sağ ipsilateral refleksler alınamadı; sol normal.', 'SRT sağ 70 dB HL, WRS sağ %48.', 'DPOAE sağda tüm bantlarda alınamadı.', 'ABR sağda dalga V 80 dB nHL\'de güçlükle elde edildi.', 'Aciliyet: 72 saat içinde değerlendirme; MRG retrokoklear patolojiyi dışlamak için planlandı.'],
     answer: 'ssnhl', category: 'sensorineural', laterality: 'right', keyFreqs: [250, 500, 1000, 2000, 4000, 8000],
     explanation: '72 saat içinde gelişen, ardışık üç frekansta ≥30 dB tek taraflı SNİK: ani işitme kaybı tanımı. Odyolojik acildir; erken tedavi sonucu etkiler.',
+    teaching: ['"Tıkanıklık" hissi iletim kaybı sanılır; Weber ve timpanogram ilk dakikada ayırır.', 'Tanım: 72 saat, ardışık 3 frekans, ≥30 dB.', 'Steroid ilk 2 hafta içinde; MRG tüm olgularda planlanır.'],
     source: 'AAO-HNS Clinical Practice Guideline: Sudden Hearing Loss (2019)',
   },
   {
@@ -95,6 +105,7 @@ export const CASES: Case[] = [
     hints: ['Sol refleksler yükselmiş eşikte alınıyor; 500-1000 Hz\'de belirgin refleks çürümesi.', 'WRS sol %36 (eşiklere göre beklenenden kötü, rollover pozitif); sağ %100.', 'DPOAE solda 1-4 kHz arasında kısmen mevcut (koklea görece korunmuş).', 'ABR: sol dalga V latansı 0,6 ms gecikmiş, interaural fark anlamlı.', 'Kontrastlı MRG: sol iç kulak yolunda 11 mm kitle.'],
     answer: 'vestibular_schwannoma', category: 'retrocochlear', laterality: 'left', keyFreqs: [2000, 4000, 8000],
     explanation: 'Asimetrik SNİK + eşiklere göre orantısız kötü WRS + refleks çürümesi + ABR gecikmesi retrokoklear dörtlüsüdür; MRG tanıyı doğrular.',
+    teaching: ['Asimetri kuralı: iki frekansta ≥15 dB ya da tek frekansta ≥20 dB fark MRG gerektirir.', 'Rollover ve refleks çürümesi "sinir yoruluyor" demektir.', 'OAE\'nin korunması kaybın koklea ötesinde olduğunu fısıldar.'],
     source: KATZ,
   },
   {
@@ -105,6 +116,7 @@ export const CASES: Case[] = [
     hints: ['Sağ refleksler alınamadı (sonda sızdırıyor gibi davranıyor).', 'SRT sağ 30 dB HL; WRS %100.', 'OAE sağda alınamadı; solda normal.', 'ABR istenmedi.', 'Otoskopi: sağ zar pars tensada düzensiz kenarlı santral delik.'],
     answer: 'tm_perforation', category: 'conductive', laterality: 'right', keyFreqs: [250, 500, 1000],
     explanation: 'Tip B timpanogramın anahtar ayırıcısı kanal hacmidir: büyük hacim perforasyonu, normal hacim efüzyonu düşündürür. Travmatik perforasyonların çoğu kendiliğinden iyileşir.',
+    teaching: ['Kanal hacmi timpanogramın en çok atlanan satırıdır; önce ona bak.', 'Perforasyonda kayıp alçak frekans ağırlıklı ve genelde ≤35 dB.', 'Kuru tut, 3 ay bekle; iyileşmezse miringoplasti.'],
     source: GELFAND,
   },
   {
@@ -112,9 +124,10 @@ export const CASES: Case[] = [
     history: '61 yaşında kadın, over kanseri için sisplatin bazlı kemoterapinin üçüncü kürünü tamamladı. Yüksek perdeli çınlama başladı; seri odyogramlarda yüksek frekansların kötüleştiği görülüyor.',
     audiogram: { right: { ac: [10, 10, 15, 30, 60, 80], bc: [10, 10, 15, 30, 60, null] }, left: { ac: [10, 15, 15, 35, 65, 85], bc: [10, 15, 15, 35, 65, null] } },
     tympanogram: { right: N, left: N },
-    hints: ['Refleksler 500-1000 Hz mevcut, 2-4 kHz alınamadı.', 'WRS bilateral %88.', 'DPOAE yüksek frekanslarda ilk kürden sonra kaybolmaya başlamış; yüksek frekans odyometri (10-16 kHz) daha erken etkilenmiş.', 'ABR normal morfoloji.', 'Görüntüleme endikasyonu yok; onkolojiye doz bildirimi yapıldı.'],
+    hints: ['Refleksler 500-1000 Hz normal, 2 kHz yükselmiş eşikte, 4 kHz alınamadı.', 'WRS bilateral %88.', 'DPOAE yüksek frekanslarda ilk kürden sonra kaybolmaya başlamış; yüksek frekans odyometri (10-16 kHz) daha erken etkilenmiş.', 'ABR normal morfoloji.', 'Görüntüleme endikasyonu yok; onkolojiye doz bildirimi yapıldı.'],
     answer: 'ototoxicity', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [4000, 8000],
     explanation: 'Sisplatin önce bazal koklea yani yüksek frekansları etkiler; bilateral simetrik, seri ölçümde ilerleyen SNİK ve ilaç öyküsü ototoksisiteyi gösterir. Takipte ultra yüksek frekans odyometri ve OAE kritik.',
+    teaching: ['Bazal tur önce gider: ultra yüksek frekanslar (10-16 kHz) ve DPOAE en erken uyarıdır.', 'Bazal odyogram tedaviden ÖNCE alınmalı; sonrası kıyas olmadan okunamaz.', 'ASHA kriteri: 20 dB tek frekans / 10 dB iki ardışık frekans kötüleşme = bildir.'],
     source: 'ASHA Guidelines for the Audiologic Management of Individuals Receiving Cochleotoxic Drug Therapy',
   },
   {
@@ -125,6 +138,7 @@ export const CASES: Case[] = [
     hints: ['Refleksler bilateral normal eşiklerde.', 'WRS sessizde %100; gürültüde konuşma testi (SNR) yaşıtlarına göre hafif kötü.', 'DPOAE bilateral mevcut, amplitüdler normal sınırlarda.', 'ABR dalga I amplitüdü görece düşük; kesin tanı ölçütü değil.', 'Görüntüleme gerekmiyor.'],
     answer: 'normal', category: 'normal', laterality: 'bilateral', keyFreqs: [],
     explanation: 'Tüm eşikler 20 dB HL içinde: odyometrik olarak normal işitme. Gürültüde anlama güçlüğü "gizli işitme kaybı" (sinaptopati) tartışmasını açar ama standart odyogramda tanı "normal"dir. Her odyogramda kayıp aramayın.',
+    teaching: ['Her odyogramda kayıp arama; "normal" de bir tanıdır.', 'Gürültüde anlama şikâyeti varsa gürültüde konuşma testi ekle.', 'Sinaptopati kuramı odyogramda görünmez; danışmanlık ve koruma yine önerilir.'],
     source: 'Liberman & Kujawa, Hear Res 2017; Hidden hearing loss literatürü',
   },
   {
@@ -132,9 +146,10 @@ export const CASES: Case[] = [
     history: '19 yaşında erkek, iş kazası sonrası tazminat sürecinde. Her iki kulakta ciddi işitme kaybı tarif ediyor ancak muayene odasında normal ses seviyesinde rahat sohbet ediyor.',
     audiogram: { right: { ac: [55, 60, 60, 60, 65, 65], bc: [50, 55, 55, 60, 60, null] }, left: { ac: [55, 55, 60, 60, 65, 70], bc: [50, 55, 55, 60, 60, null] } },
     tympanogram: { right: N, left: N },
-    hints: ['Akustik refleksler bilateral 85-90 dB HL\'de alınıyor (eşiklere göre beklenmedik ölçüde normal).', 'SRT bilateral 20 dB HL; saf ses ortalaması 60 dB ile uyumsuz. Tekrar testlerde eşikler ±15 dB oynuyor.', 'DPOAE bilateral tüm bantlarda güçlü.', 'ABR: dalga V 20 dB nHL\'e kadar izlenebiliyor; Stenger testi pozitif.', 'Görüntüleme endikasyonu yok.'],
+    hints: ['Akustik refleksler bilateral 85-90 dB HL\'de alınıyor (eşiklere göre beklenmedik ölçüde normal).', 'SRT bilateral 20 dB HL; saf ses ortalaması 60 dB ile uyumsuz. Tekrar testlerde eşikler ±15 dB oynuyor.', 'DPOAE bilateral tüm bantlarda güçlü.', 'ABR: dalga V 20 dB nHL\'e kadar izlenebiliyor. Kayıp simetrik olduğundan Stenger uygulanamadı; ASSR eşikleri 15-20 dB.', 'Görüntüleme endikasyonu yok.'],
     answer: 'nonorganic', category: 'functional', laterality: 'bilateral', keyFreqs: [500, 1000, 2000],
     explanation: 'SRT-PTA uyumsuzluğu, tutarsız eşikler, normal refleks ve OAE, objektif testte normal işitme: nonorganik (fonksiyonel) işitme kaybı. Yargılamadan, objektif testlerle belgeleyin.',
+    teaching: ['SRT ile PTA arasında >10 dB fark ilk kırmızı bayraktır.', 'Stenger yalnız asimetrik kayıpta çalışır; simetrikte objektif testlere (OAE, ABR, ASSR) geç.', 'Rapor diline dikkat: "eşikler güvenilir değil", "simülasyon" değil.'],
     source: KATZ,
   },
   {
@@ -145,7 +160,8 @@ export const CASES: Case[] = [
     hints: ['Akustik refleksler bilateral alınamadı.', 'Davranışsal eşikler (VRA) tutarsız; konuşma farkındalığı eşiklerle uyumsuz.', 'TEOAE ve DPOAE bilateral MEVCUT, amplitüdler normal.', 'ABR: koklear mikrofonik belirgin ve polarite ile tersleniyor; nöral dalgalar (I-V) 90 dB nHL\'de dahi yok.', 'MRG: koklear sinir her iki tarafta mevcut.'],
     answer: 'ansd', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [250, 500, 1000, 2000, 4000, 8000],
     explanation: 'OAE mevcut + ABR yok + koklear mikrofonik var: işitsel nöropati spektrum bozukluğu. Dış tüylü hücreler sağlam, iç tüylü hücre/sinaps/sinir düzeyinde sorun. Prematürite ve hiperbilirubinemi risk faktörleri.',
-    source: 'JCIH 2019 Position Statement; Starr et al., Brain 1996',
+    teaching: ['YYBÜ bebeklerinde tarama ABR ile yapılmalı; OAE ANSD\'yi kaçırır.', 'Koklear mikrofoniği görmek için polariteyi tersle (rarefaction/condensation).', 'ANSD\'de odyogram davranışı öngörmez; müdahale konuşma algısına göre planlanır.'],
+    source: `${JCIH}; Starr et al., Brain 1996`,
   },
   {
     id: 13, difficulty: 3,
@@ -155,6 +171,7 @@ export const CASES: Case[] = [
     hints: ['Akustik refleksler bilateral MEVCUT (iletim tipi kayıpta beklenmez).', 'WRS bilateral %100.', 'OAE bilateral mevcut.', 'cVEMP sağda eşik 65 dB nHL\'e düşmüş, amplitüd belirgin yüksek.', 'Yüksek çözünürlüklü temporal BT (Pöschl): sağ süperior semisirküler kanal tavanında kemik defekti.'],
     answer: 'sscd', category: 'conductive', laterality: 'right', keyFreqs: [250, 500],
     explanation: 'Alçak frekanslarda hava-kemik aralığı, 0 dB\'nin altında "süpranormal" kemik yolu, refleksler ve OAE mevcut: orta kulak kaynaklı olmayan "yalancı iletim" kaybı. Üçüncü pencere etkisi; cVEMP eşiği düşük, BT tanıyı koyar.',
+    teaching: ['İletim kaybı + refleksler MEVCUT = orta kulak değil, üçüncü pencere düşün.', 'Negatif (süpranormal) kemik yolu eşikleri SSKD\'nin imzasıdır.', 'Yanlış tanıyla stapes cerrahisi yapılan otoskleroz "taklitçisi"; önce VEMP ve BT.'],
     source: 'Minor LB, Arch Otolaryngol Head Neck Surg 1998',
   },
   {
@@ -165,6 +182,7 @@ export const CASES: Case[] = [
     hints: ['Sol refleksler alınamadı.', 'SRT sol 50 dB HL; WRS %92.', 'OAE solda alınamadı.', 'Fistül testi solda pozitif (nistagmus); kalorik testte sol zayıflık.', 'Temporal BT: sol attik/antrumda kemik erozyonu yapan yumuşak doku kitlesi, lateral semisirküler kanal fistülü şüphesi.'],
     answer: 'cholesteatoma', category: 'mixed', laterality: 'left', keyFreqs: [250, 500, 1000, 2000],
     explanation: 'Kötü kokulu kronik akıntı, kemik erozyonu ve fistül bulgusu kolesteatomu işaret eder. Kemikçik erozyonu iletim komponentini, iç kulak tutulumu sensörinöral komponenti açıklar: mikst kayıp. Cerrahi öncesi değerlendirme gerekir.',
+    teaching: ['Kötü koku kolesteatomun, kokusuz akıntı basit KOM\'un kokusudur.', 'Fistül testi pozitifse labirent açılmış demektir; BT acil.', 'Mikst kayıp = kemik yolu düşük VE üstüne hava-kemik aralığı.'],
     source: CUMMINGS,
   },
   {
@@ -175,7 +193,8 @@ export const CASES: Case[] = [
     hints: ['Refleksler sağ alınamadı, sol yükselmiş eşikte.', 'Konuşma farkındalık eşiği oyun odyometrisiyle sağ 75, sol 45 dB HL.', 'OAE bilateral alınamadı.', 'ABR: sağ 90 dB nHL\'de dalga V yok; sol 55 dB nHL\'de izleniyor. Seri ABR\'de ilerleme.', 'Kraniyal MRG: periventriküler kalsifikasyon ve beyaz cevher değişiklikleri.'],
     answer: 'congenital_cmv', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [1000, 2000, 4000, 8000],
     explanation: 'Asimetrik, ilerleyici ve geç başlangıçlı olabilen SNİK ile doğumda viral bulgular: konjenital sitomegalovirüs, kalıtsal olmayan konjenital işitme kaybının en sık nedeni. Seri takip şart.',
-    source: 'Goderis et al., Pediatrics 2014; JCIH 2019',
+    teaching: ['Taramayı geçen kulak da sonradan kaybedebilir: CMV ilerleyici ve geç başlangıçlıdır.', 'İlk 3 haftada idrar/tükürük PCR tanı koyar; sonrası konjenital-edinsel ayrımı zorlaşır.', 'Asimetrik pediatrik SNİK\'te 6 ayda bir odyogram.'],
+    source: `Goderis et al., Pediatrics 2014; ${JCIH}`,
   },
   {
     id: 16, difficulty: 2,
@@ -185,6 +204,7 @@ export const CASES: Case[] = [
     hints: ['Refleksler bilateral mevcut ancak eşikler yükselmiş.', 'SRT bilateral 45-50 dB HL; WRS %84.', 'OAE bilateral alınamadı.', 'ABR: dalga V 55 dB nHL\'de bilateral; cVEMP eşikleri düşük.', 'Temporal BT: vestibüler akuadukt orta noktada 2,1 mm (>1,5 mm).'],
     answer: 'evas', category: 'mixed', laterality: 'bilateral', keyFreqs: [250, 500, 1000, 2000],
     explanation: 'Dalgalanan, kafa travmasıyla basamaklı kötüleşen çocukluk çağı kaybı; normal orta kulağa rağmen alçak frekanslarda hava-kemik aralığı (üçüncü pencere) geniş vestibüler akuadukt için tipiktir. Temas sporlarından kaçınma önerilir.',
+    teaching: ['Normal orta kulak + alçak frekans ABG = üçüncü pencere; çocukta önce EVA.', 'Kafa travmasıyla basamaklı düşüş EVA\'nın tipik öyküsüdür.', 'Pendred için tiroid ve genetik (SLC26A4) değerlendirmesi ekle.'],
     source: 'Valvassori & Clemis, Laryngoscope 1978; Cummings',
   },
   {
@@ -195,6 +215,7 @@ export const CASES: Case[] = [
     hints: ['Sağ refleks ölçümü yapılamadı; sol normal.', 'SRT sağ 25 dB HL; WRS %100.', 'OAE sağda alınamadı (kanal tıkalı), solda normal.', 'ABR istenmedi.', 'Otoskopi: sağ dış kulak yolu ödemli, eritemli, deskuamasyon; zar görülemiyor.'],
     answer: 'otitis_externa', category: 'conductive', laterality: 'right', keyFreqs: [250, 500],
     explanation: 'Tragus hassasiyeti, kanal ödemi ve su maruziyeti akut otitis eksterna ("yüzücü kulağı") için klasik tablodur. Hafif iletim tipi kayıp kanal tıkanıklığına bağlıdır ve tedaviyle düzelir.',
+    teaching: ['Tragus/kepçe hassasiyeti dış kulağı, zar bombeliği orta kulağı işaret eder.', 'Kanal kapalıysa odyogram "geçici" okunur; tedavi sonrası tekrar.', 'Diyabetik/immünsüpresif hastada malign otitis eksternayı akılda tut.'],
     source: 'AAO-HNS Clinical Practice Guideline: Acute Otitis Externa (2014)',
   },
   {
@@ -205,6 +226,7 @@ export const CASES: Case[] = [
     hints: ['Sol refleks ölçümü yapılamadı.', 'SRT sağ 30 / sol 50 dB HL; WRS her iki tarafta %80.', 'OAE bilateral alınamadı (sağ presbiakuzi, sol kanal tıkalı).', 'ABR istenmedi.', 'Otoskopi: sol dış kulak yolu tamamen serumenle tıkalı; cihaz kalıbı serumenle dolu.'],
     answer: 'cerumen', category: 'mixed', laterality: 'left', keyFreqs: [250, 500, 1000],
     explanation: 'Var olan simetrik SNİK üzerine solda yeni hava-kemik aralığı ve çok küçük kanal hacmi: serumen tıkacı. Cihaz kullanıcılarında en sık "cihaz bozuldu" nedenidir; önce kanala bakın.',
+    teaching: ['Eski odyogramla karşılaştır: yeni ABG + aynı kemik yolu = iletim eklenmiş.', 'Çok küçük kanal hacmi sonda tıkanmış demektir; önce otoskopi.', 'Cihaz kullanıcısında "boğuk ses" şikâyetinin ilk basamağı kanal ve kalıp kontrolüdür.'],
     source: 'AAO-HNS Clinical Practice Guideline: Earwax (Cerumen Impaction) (2017)',
   },
   {
@@ -215,6 +237,7 @@ export const CASES: Case[] = [
     hints: ['Sağ refleksler alınamadı; sol normal.', 'SRT sağ 55 dB HL; WRS %100.', 'OAE sağda alınamadı.', 'ABR istenmedi.', 'Temporal BT: sağ inkudostapedial eklem ayrışması; zar ve koklea sağlam.'],
     answer: 'ossicular_discontinuity', category: 'conductive', laterality: 'right', keyFreqs: [250, 500, 1000, 2000],
     explanation: 'Sağlam zar ile 55-60 dB\'lik "maksimal" iletim kaybı ve tip Ad timpanogram kemikçik zincir kopukluğunu düşündürür; travma öyküsü tipiktir. Ossikuloplasti ile düzeltilebilir.',
+    teaching: ['İletim kaybının tavanı ~60 dB\'dir; o tavana dayanmış düz kayıp + sağlam zar = zincir kopuk.', 'Tip Ad: zar sağlam ama arkası "boş"; otoskleroz (As) ile zıt yönde.', 'Longitudinal kırık iletim, transvers kırık sensörinöral kayıp yapar.'],
     source: CUMMINGS,
   },
   {
@@ -225,7 +248,8 @@ export const CASES: Case[] = [
     hints: ['Akustik refleksler bilateral alınamadı.', 'Konuşma farkındalığı 100 dB HL\'de yok.', 'OAE bilateral alınamadı.', 'ABR: 95 dB nHL\'de bilateral yanıt yok.', 'MRG/BT: her iki kokleada bazal turda ossifikasyon başlangıcı (labirentitis ossifikans).'],
     answer: 'post_meningitis', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [250, 500, 1000, 2000, 4000, 8000],
     explanation: 'Menenjit sonrası bilateral çok ileri SNİK; koklear ossifikasyon hızla ilerleyebildiğinden koklear implant değerlendirmesi acildir. Çocuklarda edinilmiş derin kaybın önde gelen nedeni.',
-    source: 'Cummings; JCIH 2019 risk faktörleri',
+    teaching: ['Menenjit sonrası odyolojik değerlendirme taburculuktan önce ya da ilk 4 hafta içinde.', 'Ossifikasyon haftalar içinde elektrot yerleşimini engelleyebilir; Kİ zamanlaması acildir.', 'Konuşma gerilemesi edinsel derin kaybın sessiz alarmıdır.'],
+    source: `Cummings; ${JCIH} risk faktörleri`,
   },
   {
     id: 21, difficulty: 1,
@@ -235,6 +259,7 @@ export const CASES: Case[] = [
     hints: ['Sağ refleksler alınamadı; sol mevcut.', 'Oyun odyometrisi: SRT sağ 40 / sol 10 dB HL.', 'TEOAE sağda alınamadı, solda mevcut.', 'ABR istenmedi.', 'Otoskopi: sağ zar hiperemik, bombe, ışık reflesi kaybolmuş.'],
     answer: 'acute_otitis_media', category: 'conductive', laterality: 'right', keyFreqs: [250, 500, 1000],
     explanation: 'Akut başlangıç, ateş ve ağrı ile bombe-hiperemik zar: akut otitis media. Efüzyonlu otitten farkı akut enfeksiyon bulgularıdır; işitme kaybı tedaviyle geriler, 3 ay sonra kontrol odyogramı önerilir.',
+    teaching: ['AOM = sıvı + akut enfeksiyon bulgusu; EOM = sıvı, enfeksiyon yok.', 'Bombe zar tanı için en güvenilir otoskopik bulgudur.', 'Tedavi sonrası 3. ayda efüzyonun gittiğini odyogramla doğrula.'],
     source: 'AAP Clinical Practice Guideline: Acute Otitis Media (2013)',
   },
   {
@@ -245,6 +270,7 @@ export const CASES: Case[] = [
     hints: ['Sağ refleksler alınamadı.', 'SRT sağ 55 / sol 20 dB HL; WRS sağ %84, sol %96.', 'OAE sağda alınamadı.', 'ABR istenmedi.', 'Otoskopi: sağda büyük santral perforasyon, mukoza ödemli; BT\'de mastoid hücrelerde skleroz, kolesteatom lehine erozyon yok.'],
     answer: 'chronic_otitis_media', category: 'mixed', laterality: 'right', keyFreqs: [250, 500, 1000, 2000],
     explanation: 'Yıllardır süren akıntı, kalıcı santral perforasyon ve büyük kanal hacimli tip B: kronik otitis media. Uzun süreli enflamasyonun iç kulağa etkisi sensörinöral komponenti açıklar; kemik erozyonu yoksa kolesteatomsuz tip.',
+    teaching: ['Santral perforasyon güvenli, attik/marjinal perforasyon tehlikeli tiptir.', 'Uzun süreli KOM yuvarlak pencere yoluyla kokleayı etkiler: mikst kayıp.', 'Cerrahi öncesi kemik yolu "hedef"tir; hastaya beklentiyi öyle anlat.'],
     source: CUMMINGS,
   },
   {
@@ -255,6 +281,7 @@ export const CASES: Case[] = [
     hints: ['Refleksler 500-1000 Hz bilateral mevcut; sol 4 kHz alınamadı.', 'WRS sağ %100, sol %88.', 'DPOAE sol 3-6 kHz\'de alınamadı.', 'ABR normal.', 'Görüntüleme gerekmiyor.'],
     answer: 'noise_acoustic_trauma', category: 'sensorineural', laterality: 'left', keyFreqs: [2000, 4000, 8000],
     explanation: 'Tek bir yoğun impuls sesten sonra gelişen, 4 kHz çentikli asimetrik SNİK: akustik travma. Kronik gürültü kaybından farkı ani ve tek olaylı olmasıdır; sağ elini kullanan atıcıda sol kulak daha çok etkilenir (baş gölgesi).',
+    teaching: ['Akustik travma tek olay, GBİK yıllar; ikisi de 4 kHz çentiği yapar.', 'Atıcıda tüfek omzunun karşı kulağı daha kötüdür: baş gölgesi etkisi.', 'İlk 72 saatte steroid tartışılır; çınlama danışmanlığı erken başlar.'],
     source: 'Katz; Military audiology literatürü',
   },
   {
@@ -265,7 +292,184 @@ export const CASES: Case[] = [
     hints: ['Refleksler bilateral normal.', 'Sessizde WRS %100; gürültüde konuşma anlama ve dikotik kelime testlerinde sol kulak skoru yaşa göre belirgin düşük.', 'OAE bilateral normal.', 'ABR normal; frekans paterni ve boşluk tespiti testleri yaş normunun altında.', 'MRG normal; dil ve dikkat değerlendirmesi normal sınırda.'],
     answer: 'auditory_processing_disorder', category: 'retrocochlear', laterality: 'bilateral', keyFreqs: [],
     explanation: 'Normal odyogram ve periferik testlerle birlikte dikotik, temporal ve gürültüde konuşma testlerinde bozukluk: işitsel işlemleme bozukluğu. Tanı için dikkat/dil sorunlarının dışlanması ve test bataryasında en az iki testte 2 SS altı gerekir.',
+    teaching: ['Normal odyogram "işitme normal" demektir, "işitsel sistem normal" değil.', 'Dikotik testte sol kulak dezavantajı santral işlemlemenin klasik bulgusudur.', 'Tanı için en az iki testte 2 SS altı; dikkat ve dil mutlaka dışlanır.'],
     source: 'AAA Clinical Practice Guidelines: Diagnosis, Treatment and Management of Children and Adults with CAPD (2010)',
+  },
+  {
+    id: 25, difficulty: 2,
+    history: '6 haftalık bebek. Yenidoğan işitme taramasında OAE ile iki kez "kaldı". Zamanında doğmuş, yoğun bakım öyküsü ve risk faktörü yok; annesi "seslere irkiliyor" diyor.',
+    audiogram: { right: { ac: [40, 40, 35, 35, 30, null], bc: [10, 10, 10, 10, 10, null] }, left: { ac: [35, 40, 35, 30, 30, null], bc: [10, 10, 10, 10, 10, null] } },
+    tympanogram: { right: 'B (1000 Hz sonda tonu, düz)', left: 'B (1000 Hz sonda tonu, düz)' },
+    hints: ['Akustik refleksler 1000 Hz sonda tonu ile bilateral alınamadı.', 'Konuşma testi yaş nedeniyle yapılamadı; seslere irkilme yanıtı mevcut.', 'TEOAE bilateral alınamadı ("refer").', 'Ton-burst ABR: hava yolu eşikleri 35-45 dB nHL, kemik yolu 10 dB nHL; hava-kemik aralığı belirgin.', 'KBB muayenesi: her iki zar mat, hareketi azalmış; 3 ay sonra kontrol planlandı.'],
+    answer: 'otitis_media_effusion', category: 'conductive', laterality: 'bilateral', keyFreqs: [250, 500, 1000],
+    explanation: 'Taramadan kalan bebeklerin önemli kısmında neden geçici orta kulak sıvısıdır. Kemik yolu ABR normal, hava yolu yükselmiş: iletim tipi kayıp. Kalıcı SNİK dışlanana kadar takip sürer.',
+    teaching: ['"Kaldı" demek SNİK demek değildir; ilk aylarda en sık neden efüzyondur.', 'Bebekte kemik yolu ABR ve 1000 Hz sonda tonu timpanometri iletim-sensörinöral ayrımını yapar.', 'JCIH 1-3-6: 1 ayda tarama, 3 ayda tanı, 6 ayda müdahale.'],
+    source: `${JCIH}; Boone et al., Int J Pediatr Otorhinolaryngol 2005`,
+  },
+  {
+    id: 26, difficulty: 2,
+    history: '44 yaşında erkek. İki gündür hiç dinmeyen şiddetli baş dönmesi, bulantı-kusma; yürürken sola doğru yalpalıyor. İşitmede değişiklik ve çınlama yok; bir hafta önce üst solunum yolu enfeksiyonu geçirmiş.',
+    audiogram: { right: { ac: [5, 5, 10, 10, 10, 15], bc: [5, 5, 10, 10, 10, null] }, left: { ac: [5, 10, 10, 10, 15, 15], bc: [5, 10, 10, 10, 15, null] } },
+    tympanogram: { right: N, left: N },
+    hints: ['Akustik refleksler bilateral normal eşiklerde.', 'WRS bilateral %100; SRT 10 dB HL.', 'DPOAE bilateral mevcut.', 'Sağa vuran horizontal-rotatuar spontan nistagmus; vHIT: sol lateral kanal kazancı 0,45, düzeltici sakkadlar. Kalorik: sol zayıflık %70. cVEMP bilateral simetrik.', 'Difüzyon MRG: inme ve kitle yok; iç kulak yolu normal.'],
+    answer: 'vestibular_neuritis', category: 'normal', laterality: 'left', keyFreqs: [],
+    explanation: 'Akut, tek epizodlu, sürekli vertigo + tek yönlü spontan nistagmus + pozitif baş itme testi, işitme normal: vestibüler nörit. Süperior dal tutulumunda cVEMP (inferior dal) korunur. Ménière\'den farkı işitmenin normal olması ve atağın tek ve uzun olmasıdır.',
+    teaching: ['HINTS protokolü (baş itme, nistagmus, skew) akut vertigoda inmeyi ayırır.', 'Normal odyogram + tek taraflı kalorik zayıflık: labirent değil sinir tutulmuş.', 'cVEMP korunması süperior dal nöritini gösterir; inferior dalda cVEMP düşer.'],
+    source: 'Bárány Society: Acute Unilateral Vestibulopathy criteria (2022); Strupp & Brandt, Semin Neurol 2009',
+  },
+  {
+    id: 27, difficulty: 3,
+    history: '58 yaşında kadın. On yıldır sağ kulakta dolgunluk ve çınlama ile vertigo atakları öyküsü; son iki yılda ataklar seyrekleşti ama sağ işitme "artık geri gelmiyor". Dengesizlik hissi sürekli.',
+    audiogram: { right: { ac: [55, 55, 50, 50, 55, 60], bc: [55, 55, 50, 50, 55, null] }, left: { ac: [15, 15, 15, 20, 25, 30], bc: [15, 15, 15, 20, 25, null] } },
+    tympanogram: { right: N, left: N },
+    hints: ['Sağ refleksler yükselmiş eşikte mevcut, çürüme yok; sol normal.', 'SRT sağ 50 dB HL; WRS sağ %64, eşiklerle uyumlu (rollover yok). Sol %100.', 'DPOAE sağda tüm bantlarda alınamadı, solda mevcut.', 'ABR: sağ dalga V latansı eşik kaymasıyla uyumlu, interaural fark 0,2 ms. cVEMP sağ amplitüd düşük; kalorik sağ zayıflık %45.', 'MRG: pontoserebellar köşe normal; gecikmeli gadolinyum 3T\'de sağ koklear ve vestibüler hidrops.'],
+    answer: 'meniere', category: 'sensorineural', laterality: 'right', keyFreqs: [250, 500, 1000, 2000],
+    explanation: 'Erken dönemde yükselen olan Ménière odyogramı yıllar içinde düzleşir ve kalıcılaşır; ataklar azalırken işitme 50-60 dB\'de sabitlenir. Koklear WRS, refleks çürümesi yokluğu ve normal ABR retrokokleari dışlar; MRG\'de hidrops tanıyı destekler.',
+    teaching: ['Geç evre Ménière: düz, orta derece, dalgalanmayan SNİK; "yükselen" şekil kaybolmuştur.', 'Tek taraflı düz SNİK\'te retrokoklear bataryayı (çürüme, rollover, ABR) yine uygula.', 'Hidrops MRG tanı kriteri değil, destekleyici bulgudur.'],
+    source: 'Bárány Society Diagnostic Criteria for Menière\'s Disease (2015); Naganawa & Nakashima, Jpn J Radiol 2014',
+  },
+  {
+    id: 28, difficulty: 3,
+    history: '39 yaşında erkek. Sekiz aydır sol kulakta sürekli, tek taraflı çınlama; işitmesinin "normal" olduğunu düşünüyor. Baş dönmesi yok. Daha önce yapılan odyogram "normal" raporlanmış.',
+    audiogram: { right: { ac: [5, 5, 5, 10, 10, 15], bc: [5, 5, 5, 10, 10, null] }, left: { ac: [10, 10, 10, 15, 20, 30], bc: [10, 10, 10, 15, 20, null] } },
+    tympanogram: { right: N, left: N },
+    hints: ['Sol refleksler normal eşikte alınıyor ancak 1000 Hz\'de 10 saniyede %60 refleks çürümesi; sağ normal.', 'WRS sağ %100; sol %76 ve 80 dB\'de %60\'a düşüyor (rollover pozitif). Eşiklere göre açıkça düşük.', 'DPOAE bilateral tüm bantlarda mevcut.', 'ABR: sol dalga V latansı sağa göre 0,5 ms uzun; I-V interpeak sol 4,6 ms.', 'Kontrastlı MRG: sol iç kulak yolunda 7 mm intrakanaliküler kitle.'],
+    answer: 'vestibular_schwannoma', category: 'retrocochlear', laterality: 'left', keyFreqs: [8000],
+    explanation: 'Odyogram neredeyse normal; tek ipucu 8 kHz\'de 15 dB asimetri ve tek taraflı çınlama. Refleks çürümesi, rollover ve ABR interaural farkı retrokoklear tanıyı koyar; küçük intrakanaliküler schwannomlar sıklıkla "normal odyogram"la gelir.',
+    teaching: ['Tek taraflı çınlama tek başına MRG endikasyonudur; odyogram normal olsa bile.', 'WRS\'yi eşiklere göre değil, "olması gerekene" göre değerlendir.', 'Interaural dalga V farkı >0,3 ms retrokoklear için anlamlıdır.'],
+    source: 'AAO-HNS Clinical Practice Guideline: Tinnitus (2014); Katz',
+  },
+  {
+    id: 29, difficulty: 2,
+    history: '57 yaşında erkek, çiftçi. Otuz yıldır kabinsiz traktör kullanıyor ve av tüfeğiyle avlanıyor (sağ elini kullanıyor). Sol kulakta daha belirgin işitme azlığı ve çınlama tarif ediyor.',
+    audiogram: { right: { ac: [15, 15, 20, 35, 55, 50], bc: [15, 15, 20, 35, 55, null] }, left: { ac: [15, 20, 25, 45, 70, 60], bc: [15, 20, 25, 45, 70, null] } },
+    tympanogram: { right: N, left: N },
+    hints: ['Refleksler 500-1000 Hz bilateral mevcut; 2-4 kHz sağ yükselmiş, sol alınamadı. Çürüme yok.', 'WRS sağ %88, sol %80; her ikisi eşiklerle uyumlu, rollover yok.', 'DPOAE 3-6 kHz bantlarında bilateral alınamadı; solda bant daha geniş.', 'ABR: dalga V interaural latans farkı 0,1 ms; eşik kaymasına göre beklenen sınırda.', 'MRG (asimetri kuralı gereği): iç kulak yolları ve pontoserebellar köşe normal.'],
+    answer: 'noise_induced', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [2000, 4000, 8000],
+    explanation: 'Her iki kulakta 4 kHz çentikli SNİK; sol tarafın daha kötü olması sağ elini kullanan atıcıda tüfeğin karşı kulağı daha çok etkilemesiyle açıklanır. Asimetri 15 dB\'yi aştığı için retrokoklear batarya ve MRG yapılmış, normal bulunmuştur.',
+    teaching: ['Gürültü kaybı asimetrik olabilir; öykü (atıcılık, tek taraflı kaynak) asimetriyi açıklamalı.', 'Açıklanabilir asimetri bile retrokoklear taramayı iptal etmez; MRG eşiği aynıdır.', 'Çentik + 8 kHz toparlanma her iki kulakta: tanı hâlâ gürültüdür.'],
+    source: 'NIOSH; Stewart et al., Am J Audiol 2002 (recreational firearm noise)',
+  },
+  {
+    id: 30, difficulty: 2,
+    history: '29 yaşında erkek. Sağ kulakta üç yıldır yavaş artan işitme azlığı ve alçak tonlu çınlama; ağrı ve akıntı yok. Otoskopide zar sağlam, promontoryumda hafif pembe yansıma (Schwartze belirtisi) izleniyor.',
+    audiogram: { right: { ac: [50, 50, 45, 40, 35, 30], bc: [10, 15, 20, 30, 15, null] }, left: { ac: [5, 10, 10, 10, 15, 15], bc: [5, 10, 10, 10, 15, null] } },
+    tympanogram: { right: 'As (düşük komplians)', left: N },
+    hints: ['Sağ ipsilateral ve sol kontralateral (sonda sağda) refleksler alınamadı; sol ipsilateral normal.', 'SRT sağ 45 dB HL; WRS sağ %100.', 'OAE sağda alınamadı, solda mevcut.', 'ABR istenmedi.', 'İnce kesit temporal BT: sağ fissula ante fenestramda hipodens (otospongiotik) odak; kemikçikler sağlam.'],
+    answer: 'otosclerosis', category: 'conductive', laterality: 'right', keyFreqs: [250, 500, 1000, 2000],
+    explanation: 'Sağlam zar, tip As, refleks yokluğu, alçak frekans ağırlıklı hava-kemik aralığı ve 2 kHz\'de kemik yolunda Carhart çentiği: tek taraflı otoskleroz. Carhart çentiği gerçek koklear kayıp değildir; stapedotomi sonrası kemik yolu 2 kHz\'de "düzelir".',
+    teaching: ['Carhart çentiği: 2 kHz\'de kemik yolu 10-15 dB "yalancı" kötüleşir; cerrahiden sonra kaybolur.', 'Refleks paterni: sonda hasta kulaktayken hem ipsi hem kontra kaybolur.', 'Tek taraflı başlar, %70-80 olguda zamanla bilateral olur; karşı kulağı yıllık izle.'],
+    source: `${CUMMINGS}; Carhart R, Arch Otolaryngol 1950`,
+  },
+  {
+    id: 31, difficulty: 2,
+    history: '12 yaşında erkek çocuk. Sağ kulakta aylardır ağrısız, az miktarda ama kötü kokulu akıntı; aile "duymuyor, hep sol tarafına dönüyor" diyor. Çocuklukta tekrarlayan otit ve bir kez tüp öyküsü.',
+    audiogram: { right: { ac: [45, 45, 45, 50, 55, 60], bc: [10, 10, 15, 20, 30, null] }, left: { ac: [5, 5, 10, 10, 10, 15], bc: [5, 5, 10, 10, 10, null] } },
+    tympanogram: { right: 'B (düz, normal kanal hacmi)', left: N },
+    hints: ['Sağ refleksler alınamadı; sol normal.', 'SRT sağ 45 dB HL; WRS sağ %96.', 'OAE sağda alınamadı, solda mevcut.', 'Fistül testi negatif; kalorik yanıtlar simetrik.', 'Otoskopi: sağ pars flaksidada debris dolu retraksiyon cebi. BT: attikte yumuşak doku, skutum ve inkus gövdesinde erozyon.'],
+    answer: 'cholesteatoma', category: 'mixed', laterality: 'right', keyFreqs: [250, 500, 1000, 2000, 4000],
+    explanation: 'Ağrısız, kötü kokulu, inatçı akıntı ve pars flaksida retraksiyon cebi: edinsel kolesteatom. Kemik erozyonu iletim komponentini, yüksek frekanslarda hafif kemik yolu düşüşü erken iç kulak etkilenmesini yansıtır. Fistül negatif olması labirentin henüz korunduğunu gösterir.',
+    teaching: ['Pars flaksida retraksiyon cebi kolesteatomun başlangıç noktasıdır; debris doluysa cerrahi düşün.', 'Çocuk kolesteatomu daha agresif ve rekürrensi yüksektir; takip uzun.', 'Mikst kaybın sensörinöral kısmı "henüz küçük"ken cerrahi en iyi sonucu verir.'],
+    source: CUMMINGS,
+  },
+  {
+    id: 32, difficulty: 1,
+    history: '4 yaşında kız çocuk. Altı ay önce tekrarlayan efüzyon nedeniyle iki taraflı ventilasyon tüpü takıldı; kontrole geldi. Aile dil gelişiminden ve okul öncesi uyumundan memnun; akıntı yok.',
+    audiogram: { right: { ac: [15, 15, 10, 10, 10, 10], bc: [10, 10, 10, 5, 10, null] }, left: { ac: [15, 10, 10, 10, 10, 15], bc: [10, 10, 10, 5, 10, null] } },
+    tympanogram: { right: 'B (kanal hacmi büyük: 2,4 ml)', left: 'B (kanal hacmi büyük: 2,6 ml)' },
+    hints: ['Akustik refleksler timpanometrik olarak ölçülemedi (hacim büyük, basınç oluşturulamıyor).', 'Oyun odyometrisi SRT bilateral 10-15 dB HL; WRS %100.', 'TEOAE bilateral mevcut.', 'ABR istenmedi.', 'Otoskopi: her iki tüp yerinde ve açık, lümen temiz, orta kulak kuru.'],
+    answer: 'ventilation_tube', category: 'normal', laterality: 'bilateral', keyFreqs: [],
+    explanation: 'Düz tip B eğri ile büyük kanal hacmi açık (patent) tüpün beklenen bulgusudur; işitme normal sınırlarda. Tip B\'yi her gördüğünde "sıvı" demeden önce hacme ve öyküye bak: büyük hacim = tüp ya da perforasyon.',
+    teaching: ['Açık tüp = tip B + büyük hacim + normal işitme; bu "kötü" bir timpanogram değildir.', 'Tüp tıkanırsa hacim normale döner ve sıvı geri gelebilir: kontrolde hacim takip edilir.', 'Tüp düştükten sonra kalıcı perforasyon %1-2; son kontrolde odyogram şart.'],
+    source: 'AAO-HNS Clinical Practice Guideline: Tympanostomy Tubes in Children (2022 update)',
+  },
+  {
+    id: 33, difficulty: 1,
+    history: '36 yaşında kadın. Çocukluktan beri sol kulakta "delik" olduğunu biliyor; yüzmeden sonra akıntı oluyor, kuru dönemlerde şikâyeti yok. Sol tarafta hafif işitme azlığı; çınlama ve baş dönmesi yok.',
+    audiogram: { right: { ac: [5, 5, 5, 10, 10, 10], bc: [5, 5, 5, 10, 10, null] }, left: { ac: [35, 30, 30, 25, 20, 20], bc: [5, 5, 5, 5, 10, null] } },
+    tympanogram: { right: N, left: 'B (kanal hacmi büyük: 4,1 ml)' },
+    hints: ['Sol refleksler ölçülemedi (basınç oluşturulamıyor); sağ normal.', 'SRT sol 30 dB HL; WRS sol %100.', 'OAE solda alınamadı, sağda mevcut.', 'ABR istenmedi.', 'Otoskopi: sol pars tensa anteroinferior kadranda %30\'luk kuru santral perforasyon; orta kulak mukozası sağlıklı.'],
+    answer: 'tm_perforation', category: 'conductive', laterality: 'left', keyFreqs: [250, 500],
+    explanation: 'Kuru, santral, orta boy perforasyon: alçak frekans ağırlıklı, 20-35 dB\'lik iletim kaybı ve büyük kanal hacimli tip B. Kaybın miktarı perforasyonun boyutu ve yerine (arka-üst daha çok) bağlıdır.',
+    teaching: ['Perforasyonda kayıp büyüklükle ve yerleşimle orantılıdır; %30 santral ≈ 25-35 dB.', 'Kuru ve mukozası sağlıklı kulak miringoplasti için ideal adaydır.', 'Su kaçırmamak akıntıyı önler; "yüzünce akıntı" öyküsü tanıyı verir.'],
+    source: `${GELFAND}; Mehta et al., Otol Neurotol 2006 (perforasyon boyutu ve kayıp)`,
+  },
+  {
+    id: 34, difficulty: 2,
+    history: '25 yaşında kadın, kistik fibrozis. Yılda birkaç kez intravenöz tobramisin alıyor. Son kürden sonra tiz çınlama ve yüksek sesleri "çatallı" duyma başladı; baş hareketiyle görmede bulanıklık yok.',
+    audiogram: { right: { ac: [5, 5, 10, 20, 45, 70], bc: [5, 5, 10, 20, 45, null] }, left: { ac: [5, 10, 10, 20, 50, 75], bc: [5, 10, 10, 20, 50, null] } },
+    tympanogram: { right: N, left: N },
+    hints: ['Refleksler 500-2000 Hz bilateral mevcut; 4 kHz alınamadı.', 'WRS bilateral %96; SRT 10 dB HL.', 'DPOAE 4-8 kHz bilateral alınamadı; ultra yüksek frekans odyometride (10-16 kHz) 2 yıl önceki bazale göre 25-40 dB kötüleşme.', 'ABR normal. vHIT bilateral kazanç normal; dinamik görme keskinliği korunmuş (vestibülotoksisite yok).', 'Görüntüleme gerekmiyor; göğüs hastalıklarına ototoksisite bildirimi ve alternatif antibiyotik önerisi yapıldı.'],
+    answer: 'ototoxicity', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [4000, 8000],
+    explanation: 'Tekrarlayan aminoglikozid kürleri ile bilateral simetrik, yüksek frekanstan başlayıp aşağı inen SNİK: ototoksisite. Ultra yüksek frekans odyometri ve DPOAE kaybı standart odyogramdan yıllar önce yakalar; vestibüler tutulum bu olguda yok.',
+    teaching: ['Aminoglikozid hem koklea hem vestibülü vurabilir; vHIT ve dinamik görme keskinliği ekle.', 'Her kür öncesi bazal, kür sonrası kontrol: ototoksisite izlemi protokol işidir.', 'Mitokondriyal m.1555A>G taşıyıcısında tek doz bile derin kayıp yapabilir; aile öyküsünü sor.'],
+    source: 'ASHA Ototoxicity Monitoring; Garinis et al., J Cyst Fibros 2017',
+  },
+  {
+    id: 35, difficulty: 3,
+    history: '78 yaşında erkek. "Duyuyorum ama anlamıyorum" diyor; aile konuşmaları çok tekrarlıyor. Her iki kulakta benzer şikâyet, çınlama hafif. Sistemik hastalık ve ilaç öyküsü dışında kulak öyküsü yok.',
+    audiogram: { right: { ac: [25, 30, 40, 55, 65, 75], bc: [25, 30, 40, 55, 65, null] }, left: { ac: [25, 30, 40, 55, 70, 80], bc: [25, 30, 40, 55, 70, null] } },
+    tympanogram: { right: N, left: N },
+    hints: ['Refleksler 500-1000 Hz bilateral yükselmiş eşikte mevcut; çürüme yok.', 'SRT bilateral 40 dB HL. WRS sağ %52, sol %48: eşiklere göre beklenenden düşük ama simetrik; rollover yok.', 'DPOAE 1 kHz üstünde bilateral alınamadı.', 'ABR: dalga V latansları bilateral eşit, interaural fark 0 ms; I-V interpeak yaşa göre normal.', 'MRG: yaşa uygun kortikal atrofi; iç kulak yolları ve pontoserebellar köşe normal.'],
+    answer: 'presbycusis', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [1000, 2000, 4000, 8000],
+    explanation: 'Simetrik eğimli SNİK ile orantısız düşük ama simetrik WRS: nöral tip presbiakuzi (Schuknecht). Orantısız WRS tek başına retrokoklear anlamına gelmez; asimetri, çürüme ve ABR farkı yoksa yaşla ilişkili spiral ganglion kaybı düşünülür. Cihaz beklentisi buna göre ayarlanır.',
+    teaching: ['Düşük WRS tek taraflıysa alarm, iki taraflı ve simetrikse nöral presbiakuzi olabilir.', 'Schuknecht tipleri: sensoryel (eğimli), nöral (WRS düşük), striyal (düz), koklear iletim.', 'WRS %50 civarındaysa cihazdan beklenti "anlamayı kolaylaştırma"dır; ailenin iletişim stratejileri şart.'],
+    source: 'Schuknecht & Gacek, Ann Otol Rhinol Laryngol 1993; Katz',
+  },
+  {
+    id: 36, difficulty: 2,
+    history: '72 yaşında kadın. Yıllardır yavaş ilerleyen, iki taraflı işitme azlığı; "herkes mırıldanıyor" diyor. Hipertansiyon ve tip 2 diyabet var; annesi ve ablasında benzer işitme kaybı. Gürültü öyküsü yok.',
+    audiogram: { right: { ac: [35, 40, 45, 45, 50, 55], bc: [35, 40, 45, 45, 50, null] }, left: { ac: [35, 40, 45, 50, 50, 55], bc: [35, 40, 45, 50, 50, null] } },
+    tympanogram: { right: N, left: N },
+    hints: ['Refleksler 500-2000 Hz bilateral yükselmiş eşikte mevcut; çürüme yok.', 'SRT bilateral 45 dB HL; WRS sağ %88, sol %84: eşiklerle uyumlu.', 'DPOAE bilateral tüm bantlarda alınamadı.', 'ABR: dalga V latansları simetrik, eşik kaymasıyla uyumlu.', 'Görüntüleme endikasyonu yok; işitme cihazı değerlendirmesine yönlendirildi.'],
+    answer: 'presbycusis', category: 'sensorineural', laterality: 'bilateral', keyFreqs: [250, 500, 1000, 2000, 4000, 8000],
+    explanation: 'Düz, orta derece, simetrik SNİK ve iyi WRS: striyal (metabolik) tip presbiakuzi. Stria vaskülaris atrofisi tüm frekansları eşit etkiler; aile öyküsü ve vasküler risk faktörleri tipiktir. Konuşma anlama iyi olduğundan cihazdan yüksek fayda beklenir.',
+    teaching: ['Presbiakuzi hep "eğimli" olmak zorunda değil; düz konfigürasyon striyal tipi düşündürür.', 'Düz kayıp + iyi WRS: cihazdan en çok yarar gören profil.', 'Aile öyküsü ve vasküler risk (HT, DM) striyal presbiakuzide sık sorulmalı.'],
+    source: 'Schuknecht & Gacek, Ann Otol Rhinol Laryngol 1993; Gates & Mills, Lancet 2005',
+  },
+  {
+    id: 37, difficulty: 3,
+    history: '63 yaşında erkek. Çocuklukta her iki kulakta yıllarca akıntı; yetişkinlikte "kurudu" ama işitme giderek azaldı. Akıntı ve ağrı yok, çınlama bilateral. Dedesinden kalma işitme cihazını kullanmayı denemiş, "yetmedi" diyor.',
+    audiogram: { right: { ac: [55, 55, 50, 55, 60, 65], bc: [20, 25, 30, 35, 40, null] }, left: { ac: [50, 50, 50, 55, 60, 70], bc: [20, 20, 30, 35, 45, null] } },
+    tympanogram: { right: 'As (düşük komplians)', left: 'As (düşük komplians)' },
+    hints: ['Akustik refleksler bilateral alınamadı.', 'SRT sağ 55 / sol 50 dB HL; WRS sağ %84, sol %80.', 'OAE bilateral alınamadı.', 'ABR istenmedi.', 'Otoskopi: her iki zar sağlam, geniş beyaz kalker plaklar (timpanoskleroz), hareket azalmış. BT: kemikçik çevresinde sklerotik odaklar, mastoidler sklerotik, kolesteatom yok.'],
+    answer: 'chronic_otitis_media', category: 'mixed', laterality: 'bilateral', keyFreqs: [250, 500, 1000, 2000, 4000],
+    explanation: 'Çocukluk otitlerinin sekeli: zar sağlam ama timpanosklerotik, kemikçikler fikse (tip As, refleks yok) ve uzun süreli enflamasyona bağlı koklear komponent. Bilateral mikst kayıp; kolesteatom yok. Otoskleroz taklidi yapabilir; öykü ve plaklar ayırır.',
+    teaching: ['Zar sağlam + As + refleks yok: otoskleroz mu timpanoskleroz mu? Öykü (çocukluk otiti) ve zar plakları ayırır.', 'Mikst kayıpta kemik yolu, cerrahi ya da cihazla ulaşılabilecek tavanı gösterir.', 'Kemik iletimli çözümler (BAHA vb.) geniş ABG ve iyi kemik yolunda düşünülür.'],
+    source: `${CUMMINGS}; Wielinga & Kerr, Clin Otolaryngol 1993 (timpanoskleroz)`,
+  },
+  {
+    id: 38, difficulty: 2,
+    history: '11 yaşında kız çocuk. İki haftadır sol kulağında "hiç duymadığını" söylüyor; okulda akran zorbalığı öyküsü var. Kulak muayenesi normal, ağrı ve akıntı yok. Sınıfta sol tarafına fısıldandığında yine de dönüyor.',
+    audiogram: { right: { ac: [5, 5, 5, 10, 10, 10], bc: [5, 5, 5, 10, 10, null] }, left: { ac: [70, 70, 65, 70, 75, 70], bc: [55, 55, 60, 60, 60, null] } },
+    tympanogram: { right: N, left: N },
+    hints: ['Akustik refleksler bilateral normal eşiklerde; sol ipsilateral 85 dB HL (70 dB eşikle uyumsuz).', 'SRT sol 25 dB HL; saf ses ortalaması 68 dB ile uyumsuz. Sağ 5 dB HL.', 'DPOAE bilateral tüm bantlarda mevcut ve güçlü.', 'Stenger testi 500-2000 Hz pozitif; ABR solda 20 dB nHL\'de dalga V izleniyor.', 'Görüntüleme gerekmiyor; okul psikolojik danışmanına yönlendirme yapıldı.'],
+    answer: 'nonorganic', category: 'functional', laterality: 'left', keyFreqs: [500, 1000, 2000],
+    explanation: 'Sağ kulak normalken solda maskelenmemiş 70 dB eşikler gölge eğrisi oluşturmalıydı (hava için 40-50, kemik için 0-10 dB interaural atenüasyon); gölge yok. SRT-PTA uyumsuzluğu, normal refleks/OAE ve pozitif Stenger nonorganik kaybı doğrular. Çocuklarda psikososyal stresle sıktır; suçlamadan yönetilir.',
+    teaching: ['Gölge eğrisi yokluğu tek taraflı nonorganik kaybın odyogramdaki imzasıdır.', 'Stenger yalnız asimetrik kayıpta çalışır; burada ideal testtir.', 'Çocukta nonorganik kayıp bir yardım çağrısıdır: aile ve okulla köprü kur, "yalan" deme.'],
+    source: 'Katz; Peck JE, Pseudohypacusis: False and Exaggerated Hearing Loss (2011)',
+  },
+  {
+    id: 39, difficulty: 2,
+    history: '47 yaşında kadın. Dün gece sol kulakta ani işitme azlığı, tiz çınlama ve birkaç saat süren dönme hissiyle uyanmış. Bugün baş dönmesi hafifledi, işitme düzelmedi. Kulak öyküsü yok; migren tanısı var.',
+    audiogram: { right: { ac: [10, 10, 10, 10, 15, 20], bc: [10, 10, 10, 10, 15, null] }, left: { ac: [20, 25, 40, 55, 60, 65], bc: [20, 25, 40, 55, 60, null] } },
+    tympanogram: { right: N, left: N },
+    hints: ['Sol refleksler 500 Hz yükselmiş eşikte, 2 kHz alınamadı; sağ normal.', 'SRT sol 40 dB HL; WRS sol %60 (eşiklerle uyumlu), sağ %100.', 'DPOAE solda 1 kHz üstünde alınamadı.', 'ABR: sol dalga V latansı eşik kaymasıyla uyumlu, interaural fark 0,2 ms. vHIT bilateral normal; cVEMP simetrik.', 'Kontrastlı MRG: iç kulak yolu ve labirent normal; 48 saat içinde oral steroid başlandı.'],
+    answer: 'ssnhl', category: 'sensorineural', laterality: 'left', keyFreqs: [1000, 2000, 4000, 8000],
+    explanation: 'Saatler içinde gelişen, ardışık üç frekansta ≥30 dB tek taraflı SNİK; eşlik eden vertigo tanıyı değiştirmez ama prognozu kötüleştirir. Eğimli konfigürasyon ve orta derece, derin düz kayba göre daha iyi iyileşme şansı taşır. MRG tüm ani kayıplarda yapılır.',
+    teaching: ['Ani kayıpta vertigo ve yüksek frekans ağırlıklı/derin kayıp kötü prognoz işaretidir.', 'İlk odyogram tedavi öncesi bazaldir; 2. haftada kontrol, 6. ayda son durum.', 'Steroidsiz spontan iyileşme %30-60; erken tedavi şansı artırır ama garanti değildir.'],
+    source: 'AAO-HNS Clinical Practice Guideline: Sudden Hearing Loss (2019)',
+  },
+  {
+    id: 40, difficulty: 3,
+    history: '10 aylık erkek bebek. Yenidoğan taramasında sağ kulaktan "kaldı", sol geçti. Zamanında doğmuş, risk faktörü yok. Ebeveyn sağ tarafa gelen seslere dönmediğini fark ediyor; sol taraf normal görünüyor.',
+    audiogram: { right: { ac: [90, 95, 100, 105, 110, null] }, left: { ac: [10, 10, 10, 10, 15, 15] } },
+    tympanogram: { right: 'A (1000 Hz sonda tonu, normal)', left: 'A (1000 Hz sonda tonu, normal)' },
+    hints: ['Sağ refleksler alınamadı; sol normal.', 'VRA (insert kulaklık, maskeli): sağda 100 dB HL\'de yanıt yok; solda normal eşikler.', 'TEOAE ve DPOAE sağ kulakta MEVCUT; sol mevcut.', 'ABR: sağda koklear mikrofonik var, nöral dalgalar (I-V) 95 dB nHL\'de yok; sol normal morfoloji ve latans.', 'MRG (T2, iç kulak yolu parasagittal kesit): sağ koklear sinir izlenmiyor, iç kulak yolu dar; koklea normal.'],
+    answer: 'cochlear_nerve_deficiency', category: 'sensorineural', laterality: 'right', keyFreqs: [250, 500, 1000, 2000, 4000],
+    explanation: 'OAE var + ABR yok + koklear mikrofonik var: tek taraflı ANSD paterni. Ancak bu paternin tek taraflı ve derin olduğu bebeklerde en sık neden koklear sinir aplazi/hipoplazisidir; MRG parasagittal kesitte sinir yokluğu tanıyı koyar ve koklear implant adaylığını belirler.',
+    teaching: ['Tek taraflı ANSD paterni gördüğünde ilk soru: koklear sinir var mı? MRG şart.', 'BT koklea ve İKY\'yi gösterir, siniri MRG gösterir; ikisi birbirinin yerini tutmaz.', 'Sinir yokluğunda Kİ sonucu sınırlı; karşı kulak normalse CROS/BAHA ve dil takibi ön planda.'],
+    source: 'Buchman et al., Otol Neurotol 2006; JCIH 2019',
   },
 ];
 

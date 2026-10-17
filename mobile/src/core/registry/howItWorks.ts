@@ -5,7 +5,7 @@ export const HOW_IT_WORKS: Record<string, [string, string, string]> = {
   'perde-duellosu': ['İki ton çalar', 'Hangisi daha ince, hızlıca seç', 'Fark küçüldükçe puan artar; arkadaşınla düello yap'],
   'gurultu-avcisi': ['Gürültü içinde üç rakam söylenir', 'Rakamları tuşlarsın', 'Doğru bildikçe gürültü artar; nereye kadar dayanırsın?'],
   'kulagin-kac-yasinda': ['Kulaklık takarsın, sesi yarıya alırsın', 'İnce tonlar çalar, duyduğuna "duydum" dersin', 'Yaklaşık kulak yaşın çıkar; kartı paylaşırsın'],
-  'odyogramle': ['Günün vakası: odyogram + öykü', '6 tahmin, her yanlışta yeni ipucu', 'Emoji odyogramını paylaş; antrenman moduyla hızlan'],
+  'odyogramle': ['Günün vakası: odyogram + öykü, 6 tahmin, her yanlışta yeni ipucu', 'Arşivden 40 vakayı çöz, tartışmaya götür', 'Antrenman modunda süreye karşı odyogram yorumla, rütbe kazan'],
   'maskeleme-ustasi': ['İki kulağın eşiklerini girersin', 'Maskeleme gerekli mi, kaç dB ile başlanır hesaplanır', 'Formülü adım adım görürsün; pratik moduyla çalışırsın'],
   'anket-merkezi': ['HHIE-S, THI veya DHI seçersin', 'Soruları tek tek cevaplarsın', 'Puan, yorum ve klinisyene gönderilecek kart çıkar'],
   'cinlama-eslestir': ['"Daha ince / daha kalın" diyerek çınlamanı bulursun', 'Şiddetini ve tipini kaydedersin', 'Ses terapisi dinler, profili odyoloğuna gösterirsin'],

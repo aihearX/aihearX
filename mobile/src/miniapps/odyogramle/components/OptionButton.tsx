@@ -5,13 +5,14 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { AppText } from '@/core/ui';
 import { colors, radius, space } from '@/core/theme';
 
-type State = 'idle' | 'correct' | 'wrong' | 'dim' | 'reveal';
+export type OptionState = 'idle' | 'correct' | 'wrong' | 'dim' | 'reveal';
 
-/** Dört/altı şıklı soru butonu: cevaptan sonra doğru yeşil, yanlış kırmızı, doğru-olan "reveal" ile vurgulanır. */
-export function OptionButton({ label, state, onPress, index = 0 }: { label: string; state: State; onPress?: () => void; index?: number }) {
-  const bg = state === 'correct' || state === 'reveal' ? 'rgba(74,222,128,0.16)' : state === 'wrong' ? 'rgba(255,92,92,0.14)' : colors.surface;
-  const border = state === 'correct' || state === 'reveal' ? colors.mint : state === 'wrong' ? colors.red : colors.border;
-  const icon = state === 'correct' || state === 'reveal' ? 'checkmark-circle' : state === 'wrong' ? 'close-circle' : null;
+/** Şıklı soru butonu: cevaptan sonra doğru yeşil, yanlış kırmızı, doğru-olan "reveal" ile vurgulanır. */
+export function OptionButton({ label, state, onPress, index = 0 }: { label: string; state: OptionState; onPress?: () => void; index?: number }) {
+  const good = state === 'correct' || state === 'reveal';
+  const bg = good ? colors.accent2Soft : state === 'wrong' ? colors.surfaceStrong : colors.surface;
+  const border = good ? colors.mint : state === 'wrong' ? colors.red : colors.border;
+  const icon = good ? 'checkmark-circle' : state === 'wrong' ? 'close-circle' : null;
   return (
     <Animated.View entering={FadeInDown.delay(index * 50).springify().damping(16)}>
       <Pressable

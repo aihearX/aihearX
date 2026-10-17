@@ -1,10 +1,27 @@
 import type { MiniAppManifest } from '@/core/registry/types';
-import { GROUP_A } from './group-a';
-import { GROUP_B } from './group-b';
-import { GROUP_C } from './group-c';
+import { manifest as sesDedektifi } from './ses-dedektifi/manifest';
+import { manifest as tonHafizasi } from './ton-hafizasi/manifest';
+import { manifest as perdeDuellosu } from './perde-duellosu/manifest';
+import { manifest as gurultuAvcisi } from './gurultu-avcisi/manifest';
+import { manifest as kulaginKacYasinda } from './kulagin-kac-yasinda/manifest';
+import { manifest as odyogramle } from './odyogramle/manifest';
+import { manifest as maskelemeUstasi } from './maskeleme-ustasi/manifest';
+import { manifest as anketMerkezi } from './anket-merkezi/manifest';
+import { manifest as cinlamaEslestir } from './cinlama-eslestir/manifest';
+import { manifest as dengeGunlugu } from './denge-gunlugu/manifest';
 
-// Keşfet'teki sıra: Öğren → Klinik → Yarışma → Oyun → Hasta & Aile grupları içinde kendi sıraları.
-export const MINIAPPS: MiniAppManifest[] = [...GROUP_A, ...GROUP_B, ...GROUP_C];
+/**
+ * Az ama derin: 10 mini uygulama, 3 kategori.
+ * Sıra, kategori ekranındaki sırayı belirler.
+ */
+export const MINIAPPS: MiniAppManifest[] = [
+  // Oyunlar (herkes için)
+  sesDedektifi, tonHafizasi, perdeDuellosu, gurultuAvcisi, kulaginKacYasinda,
+  // Klinik (odyolog ve öğrenci)
+  odyogramle, maskelemeUstasi, anketMerkezi,
+  // Hasta & Aile
+  cinlamaEslestir, dengeGunlugu,
+];
 
 const ids = new Set<string>();
 for (const a of MINIAPPS) {

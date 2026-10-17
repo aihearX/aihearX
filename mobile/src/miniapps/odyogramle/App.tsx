@@ -1,37 +1,48 @@
 import React, { useCallback, useState } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import * as Haptics from 'expo-haptics';
-import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
-import { AppText, Button, Card, Chip, ShareCard, Stat } from '@/core/ui';
-import { colors, gradients, space } from '@/core/theme';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
+import { AppText, Button, Card } from '@/core/ui';
+import { colors, gradients, radius, space } from '@/core/theme';
+import { FeedbackFlash, sfx } from '@/core/game';
+import { useSettings } from '@/core/store/settings';
 import { dayKey } from '@/core/util/day';
-import { SEBAHATTIN } from '@/core/registry/makers';
 import type { MiniAppProps } from '@/core/registry/types';
 import { caseById, type Case } from './cases';
-import { CATEGORY_NAME, LATERALITY_NAME, dxByKey, type Laterality } from './diagnoses';
-import { MAX_GUESSES, dailyCase, emojiAudiogram, evaluate, puzzleNumber, shareText, type Guess } from './logic';
-import { useOdyogramleStore, type Play } from './store';
+import type { Laterality } from './diagnoses';
+import { MAX_GUESSES, dailyCase, evaluate, pointsFor, puzzleNumber, shareText, type Guess } from './logic';
+import { liveStreak, useOdyogramleStore, type Play } from './store';
+import { ModeBar, type Mode } from './components/ModeBar';
 import { CaseView } from './components/CaseView';
-import { DiagnosisPicker } from './components/DiagnosisPicker';
+import { HintCards } from './components/HintCards';
 import { GuessRows } from './components/GuessRows';
+import { DiagnosisPicker } from './components/DiagnosisPicker';
+import { ResultView } from './components/ResultView';
+import { StatsPanel } from './components/StatsPanel';
 import { Archive } from './components/Archive';
-
-type Mode = 'daily' | 'archive';
+import { Drill } from './components/Drill';
 
 const fresh = (caseId: number): Play => ({ caseId, guesses: [], done: false, solved: false });
 
 export default function Odyogramle({ onResult }: MiniAppProps) {
   const today = dayKey();
-  const { daily, archive, played, solved, saveDaily, saveArchive, bump } = useOdyogramleStore();
+  const store = useOdyogramleStore();
+  const haptics = useSettings((s) => s.haptics);
   const todayCase = dailyCase();
   const [mode, setMode] = useState<Mode>('daily');
   const [c, setC] = useState<Case>(todayCase);
   const [browsing, setBrowsing] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [drillActive, setDrillActive] = useState(false);
+  const [flash, setFlash] = useState<{ kind: 'good' | 'bad' | null; trigger: number }>({ kind: null, trigger: 0 });
 
+  const daily = mode === 'daily';
   // Oyun durumu doğrudan kalıcı depodan türetilir (günlük: dayKey, arşiv: caseId).
-  const play: Play = mode === 'daily' ? (daily[today] ?? fresh(todayCase.id)) : (archive[c.id] ?? fresh(c.id));
+  const play: Play = daily ? (store.daily[today] ?? fresh(todayCase.id)) : (store.archive[c.id] ?? fresh(c.id));
+  const streak = liveStreak(store);
 
-  const persist = useCallback((p: Play) => { if (mode === 'daily') saveDaily(today, p); else saveArchive(p); }, [mode, saveArchive, saveDaily, today]);
+  const persist = useCallback((p: Play) => { if (daily) store.saveDaily(today, p); else store.saveArchive(p); }, [daily, store, today]);
 
   const guess = (dx: string, lat: Laterality) => {
     if (play.done) return;
@@ -42,95 +53,102 @@ export default function Odyogramle({ onResult }: MiniAppProps) {
     const done = won || guesses.length >= MAX_GUESSES;
     const next: Play = { caseId: c.id, guesses, done, solved: won };
     persist(next);
-    Haptics.notificationAsync(won ? Haptics.NotificationFeedbackType.Success : mark === 'gray' ? Haptics.NotificationFeedbackType.Error : Haptics.NotificationFeedbackType.Warning).catch(() => {});
+    setPickerOpen(false);
+    setFlash((f) => ({ kind: won ? 'good' : mark === 'gray' ? 'bad' : null, trigger: f.trigger + 1 }));
+    if (haptics) Haptics.notificationAsync(won ? Haptics.NotificationFeedbackType.Success : mark === 'gray' ? Haptics.NotificationFeedbackType.Error : Haptics.NotificationFeedbackType.Warning).catch(() => {});
+    if (won) sfx('levelUp'); else if (done) sfx('gameOver'); else sfx(mark === 'gray' ? 'buzz' : 'ding', 0.6);
     if (done) {
-      bump(won);
+      store.finish(next, daily, today);
       onResult({
         score: won ? Math.round(((MAX_GUESSES + 1 - guesses.length) / MAX_GUESSES) * 100) : 0,
-        points: won ? (MAX_GUESSES + 1 - guesses.length) * 100 : 0,
-        xp: mode === 'daily' ? (won ? 60 : 25) : won ? 30 : 10,
+        points: pointsFor(guesses.length, won),
+        xp: daily ? (won ? 60 : 25) : won ? 30 : 10,
         label: won ? `${guesses.length}/${MAX_GUESSES} tahminde çözdün` : 'Vaka çözülemedi',
-        shareText: shareText(c, guesses, won, mode === 'daily'),
+        shareText: shareText(c, guesses, won, daily),
         meta: { caseId: c.id, mode, tries: guesses.length },
       });
     }
   };
 
-  const openDaily = () => { setMode('daily'); setBrowsing(false); setC(todayCase); };
+  const changeMode = (m: Mode) => {
+    setMode(m);
+    if (m === 'daily') { setBrowsing(false); setC(todayCase); }
+    if (m === 'archive') setBrowsing(true);
+  };
   const openArchiveCase = (id: number) => {
     const found = caseById(id);
     if (!found) return;
     setMode('archive'); setBrowsing(false); setC(found);
   };
+  const toArchive = () => { setMode('archive'); setBrowsing(true); };
+  const onDrillActive = useCallback((a: boolean) => setDrillActive(a), []);
 
-  const answerDx = dxByKey(c.answer);
-  const title = mode === 'daily' ? `Odyogramle #${puzzleNumber()}` : `Arşiv · Vaka #${c.id}`;
+  const title = daily ? `Odyogramle #${puzzleNumber()}` : `Arşiv · Vaka #${c.id}`;
   const unlockedHints = Math.min(5, play.done ? 5 : play.guesses.length);
+  const dateLabel = new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' });
+
+  const stats = <StatsPanel streak={streak} bestStreak={store.bestStreak} played={store.played} solved={store.solved} dist={store.dist} drillBest={store.drill.best} highlight={play.done && play.solved ? play.guesses.length : undefined} />;
 
   return (
-    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-      <View style={styles.top}>
-        <View style={{ flex: 1 }}>
-          <AppText variant="h2">{browsing ? 'Arşiv' : title}</AppText>
-          <AppText variant="small" muted>{browsing ? 'Geçmiş vakaları çöz' : mode === 'daily' ? 'Günün vakası · herkese aynı' : 'Arşiv vakası'}</AppText>
-        </View>
-        <View style={{ flexDirection: 'row', gap: 6 }}>
-          <Chip label="Günlük" small active={mode === 'daily' && !browsing} onPress={openDaily} icon="calendar" />
-          <Chip label="Arşiv" small active={browsing} onPress={() => setBrowsing(true)} icon="albums" color={colors.accent2} />
-        </View>
-      </View>
+    <View style={{ flex: 1 }}>
+      {!drillActive ? (
+        <View style={styles.modeWrap}><ModeBar mode={mode} onChange={changeMode} /></View>
+      ) : null}
 
-      {browsing ? (
-        <Animated.View entering={FadeInDown} style={{ gap: space.md }}>
-          <View style={styles.stats}>
-            <Stat label="Oynanan" value={played} icon="albums" />
-            <Stat label="Çözülen" value={solved} icon="trophy" color={colors.amber} />
-          </View>
-          <Archive archive={archive} todayId={todayCase.id} onPick={openArchiveCase} />
-        </Animated.View>
+      {mode === 'drill' ? (
+        <Drill onResult={onResult} onActive={onDrillActive} onDaily={() => changeMode('daily')} />
       ) : (
-        <>
-          <CaseView c={c} unlockedHints={unlockedHints} label={title} />
-          <GuessRows guesses={play.guesses} />
-          {play.done && answerDx ? (
-            <Animated.View entering={ZoomIn} style={{ gap: space.lg }}>
-              <ShareCard
-                title={play.solved ? `${play.guesses.length}/${MAX_GUESSES} 🎯` : 'Çözülemedi'}
-                subtitle={`${answerDx.name} · ${LATERALITY_NAME[c.laterality]}`}
-                gradient={play.solved ? gradients.gold : gradients.night}
-                makerName={SEBAHATTIN.name}
-                shareText={shareText(c, play.guesses, play.solved, mode === 'daily')}
-              >
-                <AppText variant="h3" color={colors.white} style={{ lineHeight: 26 }}>{emojiAudiogram(c)}</AppText>
-                <AppText variant="h3" color={colors.white} style={{ marginTop: 6 }}>{play.guesses.map((g) => (g.mark === 'green' ? '🟩' : g.mark === 'orange' ? '🟧' : g.mark === 'yellow' ? '🟨' : '⬛')).join('')}</AppText>
-              </ShareCard>
-              <Card>
-                <AppText variant="tiny" faint>Cevap · {CATEGORY_NAME[c.category]}</AppText>
-                <AppText variant="h3" style={{ marginTop: 2 }}>{answerDx.name}</AppText>
-                <AppText variant="body" muted style={{ marginTop: space.sm }}>{c.explanation}</AppText>
-                <AppText variant="tiny" faint style={{ marginTop: space.md }}>Kaynak: {c.source}</AppText>
-                <AppText variant="tiny" faint style={{ marginTop: 4 }}>Öğretici kompozit vaka; gerçek hasta verisi değildir ve tanı yerine geçmez.</AppText>
-              </Card>
-              {mode === 'daily' ? (
-                <Button title="Arşivden Vaka Çöz" icon="albums" variant="secondary" onPress={() => setBrowsing(true)} />
-              ) : (
-                <Button title="Arşive Dön" icon="arrow-back" variant="secondary" onPress={() => setBrowsing(true)} />
-              )}
+        <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+          <View style={styles.top}>
+            <View style={{ flex: 1 }}>
+              <AppText variant="h2">{browsing ? 'Arşiv' : title}</AppText>
+              <AppText variant="small" muted>{browsing ? 'Geçmiş vakaları çöz, dağılımını büyüt' : daily ? `Günün vakası · ${dateLabel} · herkese aynı` : 'Arşiv vakası · puan ve dağılım sayılır'}</AppText>
+            </View>
+            <View style={[styles.streak, streak > 0 && styles.streakOn]}>
+              <Ionicons name="flame" size={14} color={streak > 0 ? colors.amber : colors.textFaint} />
+              <AppText variant="small" color={streak > 0 ? colors.amber : colors.textFaint}>{streak}</AppText>
+            </View>
+          </View>
+
+          {browsing ? (
+            <Animated.View entering={FadeInDown} style={{ gap: space.lg }}>
+              {stats}
+              <Archive archive={store.archive} todayId={todayCase.id} onPick={openArchiveCase} />
             </Animated.View>
           ) : (
-            <Animated.View entering={FadeInDown} style={{ gap: space.md }}>
-              <AppText variant="tiny" faint>🟩 tanı+taraf · 🟧 tanı doğru ya da kategori+taraf · 🟨 kategori · ⬛ uzak</AppText>
-              <DiagnosisPicker usedKeys={play.guesses.map((g) => g.dx)} onGuess={guess} disabled={play.done} />
-            </Animated.View>
+            <>
+              <CaseView c={c} label={title} />
+              <HintCards hints={c.hints} unlocked={unlockedHints} />
+              <GuessRows guesses={play.guesses} />
+              {play.done ? (
+                <ResultView c={c} play={play} daily={daily} onArchive={toArchive} onDrill={() => changeMode('drill')}>
+                  {stats}
+                </ResultView>
+              ) : (
+                <Animated.View entering={FadeInDown} style={{ gap: space.sm }}>
+                  <Button title={`Tahmin Et · ${MAX_GUESSES - play.guesses.length} hak`} icon="flask" size="lg" gradient={gradients.gold} onPress={() => setPickerOpen(true)} />
+                  <Card>
+                    <AppText variant="tiny" faint>Renk kodu</AppText>
+                    <AppText variant="small" muted style={{ marginTop: 4 }}>🟩 tanı + taraf doğru · 🟧 tanı doğru ya da kategori + taraf · 🟨 kategori doğru · ⬛ uzak</AppText>
+                  </Card>
+                </Animated.View>
+              )}
+              {!daily ? <Button title="Arşive Dön" icon="arrow-back" variant="ghost" onPress={toArchive} /> : null}
+            </>
           )}
-        </>
+        </ScrollView>
       )}
-    </ScrollView>
+
+      <DiagnosisPicker visible={pickerOpen} onClose={() => setPickerOpen(false)} usedKeys={play.guesses.map((g) => g.dx)} onGuess={guess} remaining={MAX_GUESSES - play.guesses.length} />
+      <FeedbackFlash kind={flash.kind} trigger={flash.trigger} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { padding: 16, paddingBottom: 32, gap: space.lg },
+  modeWrap: { paddingHorizontal: 16, paddingTop: 12 },
+  content: { padding: 16, paddingBottom: 40, gap: space.lg },
   top: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
-  stats: { flexDirection: 'row', gap: space.md },
+  streak: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: radius.pill, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
+  streakOn: { backgroundColor: colors.bg, borderColor: colors.amber },
 });
