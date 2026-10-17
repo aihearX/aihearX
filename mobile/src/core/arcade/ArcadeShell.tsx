@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import type { ComponentType } from 'react';
@@ -44,10 +44,20 @@ export function ArcadeShell({ Dom, title, tagline, howTo, gradient, makerName, b
   const [mode, setMode] = useState(modes?.[0]?.id ?? 'normal');
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 1e9));
   const [last, setLast] = useState<{ score: number; stats: Record<string, number | string> } | null>(null);
+  const [ready, setReady] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   const haptics = useSettings((s) => s.haptics);
   const sounds = useSettings((s) => s.sounds);
 
+  useEffect(() => {
+    if (phase !== 'play' || ready) return;
+    const t = setTimeout(() => setTimedOut(true), 30000);
+    return () => clearTimeout(t);
+  }, [phase, ready, attempt]);
+
   const onEvent = useCallback(async (e: ArcadeEvent) => {
+    if (e.type === 'ready') { setReady(true); setTimedOut(false); return; }
     if (e.type === 'haptic') {
       if (!haptics) return;
       if (e.kind === 'success') Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
@@ -65,14 +75,35 @@ export function ArcadeShell({ Dom, title, tagline, howTo, gradient, makerName, b
     if (e.type === 'quit') setPhase('intro');
   }, [haptics, onSave, onResult, shareTextOf, xp]);
 
-  const play = () => { setSeed(Math.floor(Math.random() * 1e9)); setPhase('play'); };
+  const play = () => { setSeed(Math.floor(Math.random() * 1e9)); setReady(false); setTimedOut(false); setAttempt((a) => a + 1); setPhase('play'); };
+  const retry = () => { setReady(false); setTimedOut(false); setAttempt((a) => a + 1); };
 
   if (phase === 'play') {
     return (
       <View style={{ flex: 1, backgroundColor: colors.bg }}>
         <ErrorBoundary title={`${title} (oyun motoru)`} onReset={() => setPhase('intro')}>
-          <Dom onEvent={onEvent} seed={seed} mode={mode} sounds={sounds} dom={{ style: { flex: 1 }, scrollEnabled: false, bounces: false, matchContents: false }} />
+          <Dom key={attempt} onEvent={onEvent} seed={seed} mode={mode} sounds={sounds} dom={{ style: { flex: 1 }, scrollEnabled: false, bounces: false, matchContents: false }} />
         </ErrorBoundary>
+        {!ready ? (
+          <View style={styles.loading} pointerEvents={timedOut ? 'auto' : 'none'}>
+            {timedOut ? (
+              <View style={{ alignItems: 'center', gap: 12, paddingHorizontal: 24 }}>
+                <AppText variant="h3" center>Oyun yüklenemedi</AppText>
+                <AppText variant="small" muted center>Geliştirme modunda oyun motoru bilgisayardan Wi-Fi ile gelir; telefon ve bilgisayar aynı ağda olmalı. Tekrar denemek çoğu zaman yeter.</AppText>
+                <View style={{ flexDirection: 'row', gap: 10 }}>
+                  <Button title="Tekrar dene" icon="refresh" onPress={retry} />
+                  <Button title="Geri" variant="secondary" onPress={() => setPhase('intro')} />
+                </View>
+              </View>
+            ) : (
+              <View style={{ alignItems: 'center', gap: 12 }}>
+                <ActivityIndicator size="large" color={colors.accent} />
+                <AppText variant="bodyStrong">Oyun motoru yükleniyor…</AppText>
+                <AppText variant="small" muted center>İlk açılış 10-20 saniye sürebilir.</AppText>
+              </View>
+            )}
+          </View>
+        ) : null}
         <Pressable onPress={() => setPhase('intro')} style={styles.quit}><Ionicons name="close" size={18} color={colors.text} /></Pressable>
       </View>
     );
@@ -105,5 +136,6 @@ export function ArcadeShell({ Dom, title, tagline, howTo, gradient, makerName, b
 }
 
 const styles = StyleSheet.create({
+  loading: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: colors.bg, alignItems: 'center', justifyContent: 'center' },
   quit: { position: 'absolute', top: 10, right: 12, width: 34, height: 34, borderRadius: 17, backgroundColor: 'rgba(255,255,255,0.9)', borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center' },
 });
