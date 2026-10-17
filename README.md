@@ -1,24 +1,30 @@
-# aiHearX — Odyoloji Camiası İçin Viral Ürün Fikri
+# aiHearX — İşitme Nabzı
 
-Bu repo, Türkiye'de ve dünyada odyologlar ile odyoloji öğrencileri arasında
-hızla yayılacak, herkesi tek bir araca bağlayacak bir ürün fikrini bulmak için
-açıldı. Fikir fırtınası, eleme ve kazanan fikrin ayrıntılı notları burada.
+Odyoloji camiasında viral olacak, herkesi tek bir araca bağlayacak ürün
+fikrinin notları. Üç tur fikir fırtınasından sonra karar: **İşitme Nabzı**.
+
+## Tek cümle
+
+**İşitme Nabzı**, dünyada ilk kez işitmeyi tek seferlik bir test olmaktan
+çıkarıp nabız gibi **her gün izlenen bir yaşamsal işarete** dönüştürür:
+hastalar günde 60 saniyede işitme nabzını ölçer, odyologlar her sabah
+hastalarının "servis listesine" bakar, yapay zekâ ani düşüşü saatler içinde
+yakalayıp odyoloğa haber verir.
+
+## Üç ölçüt
+
+| Ölçüt | Karşılığı |
+|---|---|
+| **Herkesi etkilesin** | "İşitmenin nabzı" kavramı; Türkiye'nin canlı işitme sağlığı ekranı; ani işitme kaybının tedavi penceresi kapanmadan yakalandığı ilk hasta hikâyesi |
+| **Çok faydalı** | Ani sensörinöral işitme kaybında erken tedavi şansı; cihazı çekmecede kalan hastanın terk etmeden önce yakalanması; her odyoloğa hastalarıyla ilgili canlı bir panel |
+| **Düzenli bakılsın** | Hasta için günlük nabız ve seri; odyolog için her sabah bakılan uyarı listesi; öğrenci ve akademisyen için canlı tarama ve veri paneli |
 
 ## Dosyalar
 
 | Dosya | İçerik |
 |---|---|
-| [`docs/01-fikir-firtinasi.md`](docs/01-fikir-firtinasi.md) | 15 fikir, viral olma kriterlerine göre puanlama ve eleme |
-| [`docs/02-odyogramle.md`](docs/02-odyogramle.md) | **Kazanan fikir: Odyogramle** — günlük odyogram bulmacası (Wordle modeli). Oyun tasarımı, paylaşım kartı, viral döngü, aiHearX'e bağlama planı |
-| [`docs/03-mvp-ve-lansman.md`](docs/03-mvp-ve-lansman.md) | 30 günlük MVP planı, teknik yığın, lansman takvimi, ölçülecek metrikler |
-| [`docs/04-vaka-bankasi-ornekleri.md`](docs/04-vaka-bankasi-ornekleri.md) | İlk 14 günlük vaka örnekleri ve vaka JSON şeması |
-
-## Tek cümlelik özet
-
-**Odyogramle**: Her gün saat 00:00'da tüm dünyaya aynı anda tek bir anonim
-odyoloji vakası açılır. Odyogram, timpanogram ve kısa anamnez verilir; oyuncu
-6 denemede tanıyı bulmaya çalışır. Sonuç, odyogram şeklinde emoji ızgarası
-olarak paylaşılır. Üniversiteler arası günlük lig tablosu, seri (streak) ve
-"bugünün vakasını hazırlayan" rozeti ile yayılır. Her oyuncu aiHearX hesabı
-üzerinden oynar; ürün büyüdükçe vaka bankası, yapay zekâ odyogram yorumlayıcı,
-iş ilanları ve profil kartı aynı hesaba eklenir.
+| [`docs/01-fikir-firtinasi.md`](docs/01-fikir-firtinasi.md) | Üç turun tamamı: 20+ fikir, puanlama, neden elendikleri |
+| [`docs/02-isitme-nabzi.md`](docs/02-isitme-nabzi.md) | **Ürün tasarımı**: hasta yüzü, odyolog yüzü, günlük ritüel, yapay zekâ triyaj, viral döngüler, dünyada neden yok |
+| [`docs/03-teknik-mimari.md`](docs/03-teknik-mimari.md) | Ölçüm yöntemi (gürültüde rakam testi), gürültü dozu, triyaj motoru, veri gizliliği, teknik yığın, maliyet |
+| [`docs/04-yol-haritasi.md`](docs/04-yol-haritasi.md) | 60 günlük MVP, lansman, ölçülecek metrikler, gelir |
+| `docs/arsiv/` | Elenen Odyogramle fikrinin ayrıntılı notları (referans için) |

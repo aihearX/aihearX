@@ -126,3 +126,34 @@ diğer güçlü fikirlerin çoğu onun içine özellik olarak giriyor:
 - Fikir 11 (Wrapped) → yıl sonu paylaşım dalgası
 
 Ayrıntılı tasarım: [`02-odyogramle.md`](02-odyogramle.md)
+
+---
+
+## 4. İkinci ve üçüncü tur (2026-10-17, aynı gün)
+
+**Geri bildirim 1:** Odyogramle "yeterince yenilikçi değil" (Wordle uyarlaması).
+**Geri bildirim 2:** Dört alternatif (Kulağın Kaç Yaşında?, WhatsApp asistanı,
+Türkiye İşitme Haritası, Odyoloji Ödülleri) ve üç "dünyada yok" fikri
+(İşitme İkizi, Sanal Klinik, Açık İşitme Cihazı Ağı) da beğenilmedi.
+
+**Asıl ölçüt netleşti.** Ürün aynı anda üç şeyi yapmalı:
+
+1. **Herkesi çok etkilesin** (wow: ilk gördüğünde "bu nasıl yoktu?" dedirtsin)
+2. **Çok faydalı olsun** (klinikte gerçek sonuç değiştirsin)
+3. **Düzenli bakılması gereksin** (günlük ritüel, kaçırınca bir şey kaybedilsin)
+
+Önceki fikirlerin bu üç ölçüte göre neden yetersiz kaldığı:
+
+| Fikir | Etkileyici | Faydalı | Düzenli bakma | Eksik |
+|---|---|---|---|---|
+| Odyogramle | orta | orta | güçlü | Oyun; klinik sonuç değiştirmiyor |
+| WhatsApp asistanı | orta | güçlü | orta | Araç; "bakmak" değil "sormak" gerektiriyor |
+| Kulağın Kaç Yaşında? | güçlü | zayıf | zayıf | Tek seferlik |
+| İşitme Haritası | güçlü | orta | zayıf | Haritaya her gün bakılmaz |
+| Ödüller | orta | zayıf | zayıf | Yılda bir |
+| İşitme İkizi | güçlü | orta | zayıf | Tek seferlik duygusal an |
+| Sanal Klinik | güçlü | güçlü | orta | Yalnızca öğrenci |
+| Açık Cihaz Ağı | güçlü | güçlü | orta | Yapımı ve regülasyonu çok ağır |
+
+**Kazanan (3. tur): İşitme Nabzı.** Üç ölçütü de güçlü karşılayan tek fikir.
+Ayrıntı: [`02-isitme-nabzi.md`](02-isitme-nabzi.md)
