@@ -28,7 +28,7 @@ export const PHONEMES: Phoneme[] = [
   { id: 's2', label: 'ş ç', letters: ['ş', 'ç'], freq: 3200, db: 38, what: 'Tıslamalı, yüksek frekanslı sesler.', lost: '"şey" ile "çay", "aş" ile "aç" karışır; konuşma "peltek" gelir.' },
   { id: 's', label: 's', letters: ['s', 'z'], freq: 4500, db: 30, what: 'En tiz ve en sessiz seslerden biri. Çoğul ekleri ve "sen/siz" burada.', lost: '"sel" ile "el", "sal" ile "al" karışır; çoğul ekleri ve "-sin/-siz" kaybolur.' },
   { id: 'f', label: 'f', letters: ['f', 'v'], freq: 6000, db: 26, what: 'Diş ve dudak arasından sızan, çok tiz ve zayıf bir ses.', lost: '"fil" ile "il", "sel" ile "fel" karışır; "f" yok olunca kelimelerin başı boşalır.' },
-  { id: 'h', label: 'h', letters: ['h'], freq: 7800, db: 22, what: 'Nefes gibi çıkan, en tiz ve en zayıf ses.', lost: '"hal" ile "al", "hiç" ile "iç" karışır; sessiz fısıltılar tamamen kaybolur.' },
+  { id: 'h', label: 'h', letters: ['h'], freq: 7500, db: 22, what: 'Nefes gibi çıkan, en tiz ve en zayıf ses.', lost: '"hal" ile "al", "hiç" ile "iç" karışır; sessiz fısıltılar tamamen kaybolur.' },
 ];
 
 export type ProfileId = 'none' | 'hafif' | 'orta' | 'ileri';

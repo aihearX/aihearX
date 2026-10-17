@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AppText, Card } from '@/core/ui';
 import { colors, space } from '@/core/theme';
 
-const TIPS: { icon: keyof typeof import('@expo/vector-icons').Ionicons.glyphMap; title: string; text: string }[] = [
+const TIPS: { icon: keyof typeof Ionicons.glyphMap; title: string; text: string }[] = [
   { icon: 'moon', title: 'Uyku', text: 'Gece tam sessizlik çınlamayı büyütür. Hafif bir fan ya da kahverengi gürültü, uykuya dalmayı kolaylaştırır.' },
   { icon: 'cafe', title: 'Kafein ve tuz', text: 'Herkeste değil ama bazılarında kahve, enerji içeceği ve çok tuz çınlamayı artırır. Bir hafta azaltıp izle.' },
   { icon: 'volume-mute', title: 'Sessizlikten kaçın', text: 'Çok sessiz odalarda beyin çınlamaya odaklanır. Hafif bir arka plan sesi (radyo, doğa sesi) dikkatini dağıtır.' },
