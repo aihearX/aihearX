@@ -6,12 +6,15 @@
 **Yaş:** 4+ (sağlık içeriği; tanı iddiası yok)
 
 ## Tanıtım metni (170)
-Odyologlar, öğrenciler ve kulağını merak eden herkes için: oyna, öğren, bağlan. 10 derin mini uygulama, tek üyelik.
+Odyologlar, öğrenciler ve kulağını merak eden herkes için: oyna, öğren, bağlan. 13 mini uygulama, 3 arcade oyun, tek üyelik.
 
 ## Açıklama
 aihearX, odyoloji dünyasının süper uygulaması. İçinde az ama derin on mini uygulama var ve hepsi tek üyelikle açılıyor.
 
 OYUNLAR (herkes için)
+• Koklea Koşusu: kokleanın içinde koş, zıpla, kay; derine indikçe ses değişir
+• Kulak Yolculuğu: sesi dış kulaktan beyne taşı; 4 bölüm, kulak zarı trambolin, kemikçik platformlar
+• Zar Zıplaması: kulak kanalından işitme sinirine dikey tırmanış
 • Ses Dedektifi: gizemli sesi süre bitmeden tahmin et
 • Ton Hafızası: notaları hatırla; ileri seviyede sadece kulağınla
 • Perde Düellosu: hangisi daha ince? Arkadaşınla aynı telefonda düello

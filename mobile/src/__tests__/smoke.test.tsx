@@ -27,9 +27,9 @@ jest.mock('expo-router', () => ({ router: { push: jest.fn(), back: jest.fn(), re
 
 describe('mini uygulama kaydı', () => {
   it('10 uygulama, benzersiz id, geçerli kategori', () => {
-    expect(MINIAPPS.length).toBe(10);
+    expect(MINIAPPS.length).toBe(13);
     const ids = new Set(MINIAPPS.map((a) => a.id));
-    expect(ids.size).toBe(10);
+    expect(ids.size).toBe(13);
     const cats = new Set(CATEGORIES.map((c) => c.id));
     for (const a of MINIAPPS) expect(cats.has(a.category)).toBe(true);
   });

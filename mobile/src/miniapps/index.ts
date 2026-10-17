@@ -1,4 +1,7 @@
 import type { MiniAppManifest } from '@/core/registry/types';
+import { manifest as kokleaKosusu } from './koklea-kosusu/manifest';
+import { manifest as kulakYolculugu } from './kulak-yolculugu/manifest';
+import { manifest as zarZiplamasi } from './zar-ziplamasi/manifest';
 import { manifest as sesDedektifi } from './ses-dedektifi/manifest';
 import { manifest as tonHafizasi } from './ton-hafizasi/manifest';
 import { manifest as perdeDuellosu } from './perde-duellosu/manifest';
@@ -11,11 +14,12 @@ import { manifest as cinlamaEslestir } from './cinlama-eslestir/manifest';
 import { manifest as dengeGunlugu } from './denge-gunlugu/manifest';
 
 /**
- * Az ama derin: 10 mini uygulama, 3 kategori.
+ * Az ama derin: 13 mini uygulama, 3 kategori. Arcade oyunlar Phaser ile WebView'da çalışır.
  * Sıra, kategori ekranındaki sırayı belirler.
  */
 export const MINIAPPS: MiniAppManifest[] = [
-  // Oyunlar (herkes için)
+  // Oyunlar (herkes için): önce arcade, sonra kulak oyunları
+  kokleaKosusu, kulakYolculugu, zarZiplamasi,
   sesDedektifi, tonHafizasi, perdeDuellosu, gurultuAvcisi, kulaginKacYasinda,
   // Klinik (odyolog ve öğrenci)
   odyogramle, maskelemeUstasi, anketMerkezi,

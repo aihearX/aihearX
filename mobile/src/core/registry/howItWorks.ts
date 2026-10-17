@@ -1,5 +1,8 @@
 /** Her mini uygulama için "Nasıl çalışır?" üç adımı. Giriş ekranında gösterilir. */
 export const HOW_IT_WORKS: Record<string, [string, string, string]> = {
+  'koklea-kosusu': ['Odi kokleanın içinde kendiliğinden koşar', 'Dokun: zıpla; aşağı kaydır: kay; gürültü dikenlerinden kaç', 'Frekans jetonlarını topla, derine indikçe renk ve ses değişir'],
+  'kulak-yolculugu': ['Sesi dış kulaktan beyne taşı: 4 bölüm', 'Sol/sağ basılı tut, zıpla butonuna dokun', 'Kulak zarı trambolin, kemikçikler platform, koklea su altı'],
+  'zar-ziplamasi': ['Odi kendiliğinden zıplar; sen sağa sola yönlendir', 'Kemikçik, zar ve kıl hücresi platformlarına tutun', 'Kulak kanalından işitme sinirine kadar tırman'],
   'ses-dedektifi': ['Gizemli bir ses çalar', 'Dört seçenekten doğrusunu süre bitmeden seçersin', 'Kombo yap, seviye atla, rütbeni paylaş'],
   'ton-hafizasi': ['Pedler sırayla ses çıkarır', 'Diziyi aynı sırayla tekrarlarsın', 'Her tur bir nota eklenir; ileri seviyede sadece kulağınla'],
   'perde-duellosu': ['İki ton çalar', 'Hangisi daha ince, hızlıca seç', 'Fark küçüldükçe puan artar; arkadaşınla düello yap'],

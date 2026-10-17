@@ -5,7 +5,7 @@ Hedef: profesyonel his veren, karakterli, fizikli, "bir tur daha" dedirten oyunl
 ## Mimari
 - Oyun kodu **web tarafında**: `src/arcade/<id>/index.ts` → `export function mount(parent: HTMLElement, opts: ArcadeOptions): ArcadeHandle`. Phaser 3.90, TypeScript strict. Sadece tarayıcı API'leri; React Native import YOK.
 - Ortak kit: `src/arcade/shared` → `bootGame`, `getOpts`, `sfx` (Web Audio sentez), `emojiTexture`, `heroTexture`, `roundRectTexture`, `tonotopyColor/Freq`, `Hud`, `title/label/pill/flash/floatText/tapToStart`, `GAME_W=390`, `GAME_H=780` (dikey, FIT ölçek).
-- Native sarmalayıcı: `src/miniapps/<id>/Dom.tsx` (`'use dom'`; `src/miniapps/_ornek/Dom.tsx` kopyala), `src/miniapps/<id>/manifest.tsx` (`ArcadeShell` ile; `_ornek/manifest.tsx` örneği), `store.ts` (zustand persist `aihearx.miniapp.<id>`: best, games, en yüksek seviye).
+- Native sarmalayıcı: `src/miniapps/<id>/Dom.tsx` (`'use dom'`; `src/miniapps/koklea-kosusu/Dom.tsx` kopyala), `src/miniapps/<id>/manifest.tsx` (`ArcadeShell` ile; `koklea-kosusu/manifest.tsx` örneği), `store.ts` (zustand persist `aihearx.miniapp.<id>`: best, games, en yüksek seviye).
 - Köprü: oyun `opts.onEvent({type:'gameover', score, stats, label})` ile biter; `{type:'haptic', kind}` vuruş/ödül anlarında; `{type:'quit'}` menüden çıkışta. `ArcadeShell` giriş ve sonuç ekranlarını (rütbe, rekor, paylaşım) native çizer; oyun içinde ayrıca sonuç ekranı YAPMA, sadece kısa "Oyun bitti" anı + olay gönder.
 
 ## Kalite çıtası (zorunlu)

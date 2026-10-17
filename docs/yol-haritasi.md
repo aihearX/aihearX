@@ -2,7 +2,7 @@
 
 ## Sürüm 1.0 (App Store, ilk gönderim)
 - [x] Kabuk: tek üyelik, roller, Bugün/Keşfet/Oyna/Ağ/Ben
-- [x] 10 derin mini uygulama, 3 kategori; ortak oyun çekirdeği
+- [x] 13 mini uygulama, 3 kategori; 3 Phaser arcade oyun + ortak oyun çekirdeği
 - [x] Ağ: akış (arkadaşlar/herkes), profil, dizin, ilanlar, etkinlikler
 - [x] Yapımcı Ol başvurusu
 - [x] Dopamin dengesi ayarları

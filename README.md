@@ -1,6 +1,6 @@
 # aihearX
 
-**Odyolojinin tamamı tek uygulamada.** Odyologlar, odyoloji öğrencileri, odyometristler, KBB hekimleri, işitme kaybı ve denge sorunu yaşayanlar, aileleri ve kulağını merak eden herkes için süper uygulama. Az ama derin: 10 mini uygulama, tek üyelik, her birinin yapımcısı ekranda.
+**Odyolojinin tamamı tek uygulamada.** Odyologlar, odyoloji öğrencileri, odyometristler, KBB hekimleri, işitme kaybı ve denge sorunu yaşayanlar, aileleri ve kulağını merak eden herkes için süper uygulama. Az ama derin: 13 mini uygulama (3'ü gerçek arcade oyun), tek üyelik, her birinin yapımcısı ekranda.
 
 Yapımcı: **Sebahattin Ünlü** · aiHear. Instagram: **aiHear Ünlü** · Kulaktan Kulağa.
 
@@ -17,13 +17,13 @@ Yapımcı: **Sebahattin Ünlü** · aiHear. Instagram: **aiHear Ünlü** · Kula
 
 | Kategori | Uygulamalar |
 |---|---|
-| **Oyunlar** (herkes için) | Ses Dedektifi · Ton Hafızası · Perde Düellosu · Gürültü Avcısı · Kulağın Kaç Yaşında? |
+| **Oyunlar** (herkes için) | **Arcade:** Koklea Koşusu · Kulak Yolculuğu · Zar Zıplaması · **Kulak oyunları:** Ses Dedektifi · Ton Hafızası · Perde Düellosu · Gürültü Avcısı · Kulağın Kaç Yaşında? |
 | **Klinik** (odyolog ve öğrenci) | Odyogramle (günün vakası + antrenman) · Maskeleme Ustası · Anket Merkezi (HHIE-S, THI, DHI) |
 | **Hasta & Aile** | Çınlama Eşleştirici · Denge Günlüğü |
 | **Ağ** | Akış (Arkadaşlar / Herkes) · Profiller · Odyolog Dizini · İş İlanları · Etkinlikler |
 | **Yapımcı Ol** | "Aklınızdaki yazılım fikri çürüyüp gitmesin": başvur, uygunsa ücretsiz kodlayıp adınla yayınlayalım |
 
-Oyunlar ortak bir oyun çekirdeği kullanır (`mobile/src/core/game`): skor, can, kombo, süre, 3-2-1 geri sayımı, doğru/yanlış flaşı, uçan puan, rütbeler (Çırak Kulak → Koklea Efsanesi), sentezlenmiş ses efektleri, rekor ve paylaşım kartı. Kalite çıtası: `mobile/GAME_GUIDE.md`.
+Arcade oyunlar Phaser 3 ile yazıldı ve Expo DOM bileşeni içinde çalışır (Expo Go uyumlu); `mobile/tools/arcade-harness` ile Chromium'da gerçekten oynatılıp ekran görüntüsüyle doğrulanır (`ARCADE_GUIDE.md`). Kulak oyunları ortak bir oyun çekirdeği kullanır (`mobile/src/core/game`): skor, can, kombo, süre, 3-2-1 geri sayımı, doğru/yanlış flaşı, uçan puan, rütbeler (Çırak Kulak → Koklea Efsanesi), sentezlenmiş ses efektleri, rekor ve paylaşım kartı. Kalite çıtası: `mobile/GAME_GUIDE.md`.
 
 ## Çalıştırma
 

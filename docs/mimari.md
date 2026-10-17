@@ -15,6 +15,7 @@
 | Uygulama | Expo SDK 58, React Native 0.88, React 19, TypeScript strict | Tek kod tabanı, EAS ile App Store'a Xcode'suz gönderim |
 | Yönlendirme | expo-router (dosya tabanlı), `Stack.Protected` ile oturum kapıları | Deep link: `aihearx://uygulama/<id>` |
 | Durum | zustand + persist (AsyncStorage) | Küçük, hızlı, mini uygulama başına izole store |
+| Arcade oyunlar | Phaser 3 + Expo DOM bileşeni (`'use dom'`, WebView) | Gerçek oyun motoru; Metro ayrı www.bundle üretir; Chromium harness ile test edilir |
 | Ses | Saf JS ile WAV sentezi → expo-file-system → expo-audio | Ek native modül yok; ton, uyarı tonu, beyaz/pembe/kahverengi gürültü, stereo kulak yönlendirme |
 | Grafik | react-native-svg (odyogram, timpanogram, göstergeler) | Hafif, paylaşım görseline aynı veriden dönüşür |
 | Animasyon | react-native-reanimated 4 + worklets | Giriş animasyonları, skor patlamaları |
@@ -43,6 +44,9 @@ mobile/
     audio/                 WAV sentezi ve oynatma
     store/                 user, progress, settings
     auth/                  Supabase istemcisi, Apple/e-posta eylemleri
+  src/arcade/<id>/       Phaser oyunları (web kodu) + src/arcade/shared kit
+  src/core/arcade/       ArcadeShell: giriş → tam ekran oyun → sonuç
+  tools/arcade-harness/  esbuild + Playwright oyun duman testi
   src/core/game/         oyun çekirdeği: HUD, geri sayım, flaş, puan, sonuç, rütbe, sfx
   src/miniapps/<id>/       her mini uygulama: manifest.ts + App.tsx (+ store, components)
   src/network/             ağ modülü (akış, profil, dizin, ilanlar, etkinlikler)

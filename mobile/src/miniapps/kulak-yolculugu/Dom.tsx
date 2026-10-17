@@ -1,6 +1,6 @@
 'use dom';
 import React, { useEffect, useRef } from 'react';
-import { mount } from '@/arcade/_ornek';
+import { mount } from '@/arcade/kulak-yolculugu';
 import type { ArcadeDomProps } from '@/core/arcade/ArcadeShell';
 
 export default function Dom({ onEvent, seed, mode, sounds }: ArcadeDomProps) {
